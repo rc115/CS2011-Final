@@ -57,7 +57,7 @@ public class TheSlums {
           + "\n              _\\ \\/ / // /  ' \\(_-<      "
           + "\n             /___/_/\\_,_/_/_/_/___/      "
           , "PURPLE")
-          + "\n               Version 1.09.120324"
+          + "\n               Version 1.10.120424"
           + "\n" 
         );
 
@@ -86,7 +86,6 @@ public class TheSlums {
         // int money = 0; ---> stats[5]
         // int cDamage = 5; ---> stats[6]
 
-        
         int[] skills = new int[4];
         double[] damageMultipliers = new double[4];
         String background = "Unemployed";
@@ -180,7 +179,7 @@ public class TheSlums {
         final String[] BLUSH = {
             "       /\\      /\\     ",
             "      /  \\____/  \\    ",
-            "     /  _     _  \\   ",
+            "     /  _     _   \\   ",
             "    |   >     <   |   ",
             "    |  ... v ...  |   ",
             "    |    -_-_-    |   ",
@@ -217,7 +216,7 @@ public class TheSlums {
             "    \\____________/    "
         };
 
-        final String[] Fed = {
+        final String[] FED = {
             "       /\\      /\\     ",
             " ________\\____/  \\    ",
             "     /            \\   ",
@@ -303,7 +302,7 @@ public class TheSlums {
             response = playerSelection();
             if (response.equals("Sure") || response.equals("1")) {
                 final int[] TEMP_STATS = stats;
-                combat(cName, 100, 100, 30, 1.0, "Sharp", skills, damageMultipliers, 2, TEMP_STATS, "Sackary", 100, 10);
+                combat(cName, TEMP_STATS, 1.0, "Sharp", skills, damageMultipliers, "Sackary", 100, 10);
 
                 clearConsole(500);
                 slowTxt(
@@ -457,7 +456,7 @@ public class TheSlums {
             // Coloured text test might change depending on how were taught in class
             System.out.println(colour("Goober: Oi! Were gonna fight now!", "RED"));
             System.out.println(colour(cName + ": Ok.", "GREEN"));
-            wonCombat = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Goober", 100, 10);
+            wonCombat = combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Goober", 100, 10);
             stats[2] = levelUp(cName, stats[2]);
             stats[1] += 10;
             stats[0] = stats[1];
@@ -582,13 +581,13 @@ public class TheSlums {
             System.out.println(colour("Silly Fella: And Im gonna wait patiently here. Surely nothing bad happens to my friend.", "RED"));
             System.out.println(colour(cName + ": What?", "GREEN"));
 
-            wonCombat = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Goofy Fella", 50, 5);
+            wonCombat = combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Goofy Fella", 50, 5);
 
             if (wonCombat)
                 System.out.println(colour("Silly Fella: You killed my buddy! Now Im going to stab you... with a gun!", "RED"));
             else
                 System.out.println(colour("Silly Fella: Hey come back here! Its my turn to stab you.", "RED"));
-            combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Silly Fella", 150, 20);
+            combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Silly Fella", 150, 20);
             stats[2] = levelUp(cName, stats[2]);
             stats[1] += 10;
             stats[0] = stats[1];
@@ -615,7 +614,7 @@ public class TheSlums {
                     } else {
                         System.out.println(colour("Big Shootta: Dont worry kid well keep you safe...\nBut we gotta make sure you're not a cop...", "PURPLE"));
 
-                        combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Detective", 10, 0);
+                        combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Detective", 10, 0);
                         System.out.println(colour("Big Shootta: Sloppy work pal... but you're in.", "BLUE"));
                         shoottasRep += 3;
                         stabbasRep -= 1;
@@ -641,9 +640,9 @@ public class TheSlums {
             if (shoottasRep < 0 && stabbasRep < 0) {
                 System.out.println(colour(cName, "GREEN") + " got jumpped in an allyway by multiple people!");
 
-                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
-                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
-                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
+                combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Stabba", 100, 10);
+                combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Stabba", 100, 10);
+                combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Stabba", 100, 10);
 
                 stats[2] = levelUp(cName, stats[2]);
                 stats[1] += 10;
@@ -653,12 +652,12 @@ public class TheSlums {
 
                 System.out.println(colour("Unfortunately... " + cName + " pissed off more than one gang!", "RED"));
 
-                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Shootta", 100, 20);
-                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Shootta", 100, 20);
+                combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Shootta", 100, 20);
+                combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Shootta", 100, 20);
             } else if (shoottasRep > 0 && stabbasRep < 0) {
                 System.out.println(colour(cName, "Green") + " got jumpped in an allyway by multiple people!");
 
-                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
+                combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Stabba", 100, 10);
 
                 System.out.println(colour("A few Shoottas heard the commotion, and picked off the rest.", "BLUE"));
             } else if (stabbasRep < 0) {
@@ -670,11 +669,6 @@ public class TheSlums {
                 System.out.println(colour("Bystander: Nah you're good.", "PURPLE"));
             } else {
                 System.out.println(cName + " carried on with their day.");
-            }
-
-            if (cName.equals("D. Bugger")) {
-                System.out.println("Ad Min: Why dont you pick on someone your own size!");
-                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Ad Min", 10000, 100);
             }
 
             // Player talking to a npc example:
@@ -736,13 +730,13 @@ public class TheSlums {
             "and the air thick with the greasy tang of desperation. Amid the commotion, a sushi chef walks in, cutting a striking figure\n" +
             "in his crisp white uniform, neatly tied apron, and a polished knife kit slung over his shoulder. He makes his way to a\n" +
             "run-down fish stall, where an elderly vendor methodically cleans a bucket of dubious-looking fish. Nearby, a young bystander\n" +
-            "lingers, watching the scene unfold with a mix of curiosity and suspicion.\n", 100);
+            "lingers, watching the scene unfold with a mix of curiosity and suspicion.\n", 50);
 
             isSpeaking("Sushi Chef", "(Bowing slightly) Good evening. I hear you're the one to talk to for fresh fish?\n");
 
             isSpeaking("Fish vendor", "(Frowning, then laughing hoarsely) Fresh? Hah! You've got the wrong neighborhood for that, my friend. What I've got is cheap. Are you sure that's what you're after, chef?\n");
 
-            isSpeaking("Sushi chef", "Cheap works. I'm not after flavor or quality—just something to practice with.\n");
+            isSpeaking("Sushi chef", "Cheap works. I'm not after flavor or quality-just something to practice with.\n");
 
             isSpeaking("Fish vendor", "(Leaning forward, curious)  Practice? With this? You'd get better results slicing up cardboard.\n");
 
@@ -756,19 +750,19 @@ public class TheSlums {
 
             isSpeaking("Bystander", "(Snapping) Why're you really here? We've seen your type before. You come down from the fancy districts to take what's cheap, leave us with nothing.");
 
-            isSpeaking("Sushi chef", "I'm here because I respect the craft. Every piece of fish, no matter its source, has something to offer. But don't worry—the fish you're serving is safe. What I'm taking? It's not fit for anyone's palette.\n");
+            isSpeaking("Sushi chef", "I'm here because I respect the craft. Every piece of fish, no matter its source, has something to offer. But don't worry-the fish you're serving is safe. What I'm taking? It's not fit for anyone's palette.\n");
 
             isSpeaking("Bystander", "(Frowning) So, what? You're doing us a favor?\n");
 
-            isSpeaking("Sushi chef", "(Pausing, choosing words carefully) It's not a favor—it's a trade. I get to sharpen my skills on what others would throw away, and the vendor gets paid for what would otherwise go to waste. Tell me, doesn't that sound fair?\n");
+            isSpeaking("Sushi chef", "(Pausing, choosing words carefully) It's not a favor-it's a trade. I get to sharpen my skills on what others would throw away, and the vendor gets paid for what would otherwise go to waste. Tell me, doesn't that sound fair?\n");
 
             isSpeaking("Bystander", "(Still suspicious) Maybe. But what if someone here needs that fish? Even bad fish is better than going hungry.\n");
 
-            isSpeaking("Fish vendor", "(Snorting) Kid, do you have any idea what this fish would do to someone if they ate it raw? The chef's got a point—it's safer in his hands than on our plates.\n");
+            isSpeaking("Fish vendor", "(Snorting) Kid, do you have any idea what this fish would do to someone if they ate it raw? The chef's got a point-it's safer in his hands than on our plates.\n");
 
             isSpeaking("Sushi chef", "(Turning back to vendor) Thanks. I'll see you around once I've honed my skills with it.\n");
 
-            isSpeaking("Fish vendor", "(Nodding as he hands over a bag of fish) Alright, chef, it's yours. But here's the deal—next time, bring some of that fancy sushi you're perfecting. Let the people here get a taste of the good life, even if just for a moment.\n");
+            isSpeaking("Fish vendor", "(Nodding as he hands over a bag of fish) Alright, chef, it's yours. But here's the deal-next time, bring some of that fancy sushi you're perfecting. Let the people here get a taste of the good life, even if just for a moment.\n");
 
             slowTxt("\nThe chef gathers the fish and strides away, eager to refine his craft and sharpen his skills.\n", 100);
 
@@ -825,7 +819,7 @@ public class TheSlums {
                     isSpeaking(colour("\nLarry", "Purple"), "Hmph. Right.\n");
                 } else if (response.contains("no") || response.contains("No") || response.contains("nah") || response.contains("Nah")) {
                     pissedOffL -= 1;
-                    isSpeaking(colour("\nLarry", "Blue"), "Exactly. Was shit but nobody admits it.\n");
+                    isSpeaking(colour("\nLarry", "Blue"), "Exactly. Was ass but nobody admits it.\n");
                 } else {
                     pissedOffL += 1;
                     isSpeaking(colour("\nLarry", "Purple"), "Sure bud.\n");
@@ -968,8 +962,8 @@ public class TheSlums {
             slowTxt("\n" + cName + " went on a 30 minute break...", 100);
 
             clearConsole(500);
-            talkingCats(L_CLOSED, LARRY_OPEN);
             if (pissedOffL < 0) {
+                talkingCats(L_CLOSED, LARRY_OPEN);
                 isSpeaking(colour("\nLarry", "Blue"), "Haven't noticed you during my lunch. You part of the new shift?\n");
 
                 clearConsole(500);
@@ -1080,7 +1074,7 @@ public class TheSlums {
                     isSpeaking(colour("\n" + cName, "Green"), "Huh...\n");                    
                 }
             } else if (pissedOffL > 0) {
-                slowTxt(cName + " saw Larry in the cafeteria and tried to start a conversation...", 100);
+                slowTxt(cName + " saw Larry in the cafeteria and tried to start a conversation...\n\n", 100);
                 talkingCats(L_CLOSED, LARRY_OPEN);
                 isSpeaking(colour("\nLarry", "Red"), "My break is over. I have to head back to work.\n");
             }
@@ -1379,24 +1373,28 @@ public class TheSlums {
             talkingCats(L_CLOSED, R_OPEN);
             isSpeaking(colour("Tweaker", "Purple"), "Damn! Whats in the Silvervine?\n");
 
+            clearConsole(500);
+            talkingCats(L_OPEN, L_CLOSED);
+            System.out.println("\n" + cName + ": " + playerSelection());
+
             if (skills[1] >= 20) {
                 clearConsole(500);
                 talkingCats(L_OPEN, R_CLOSED);
-                isSpeaking(colour(cName, "Green"), "That gas' 80% nepetalactone man. Waltz is only about 30% NTT.\n    Both will get you bonkered tho. Silvervine will just lasts like 3 hours longer.\n");
+                isSpeaking(colour(cName, "Green"), "It's almost 80% nepetalactone. Waltz is only about 30% NTT.\n    Both will get you bonkered tho. Silvervine will just lasts like 3 hours longer.\n");
 
                 clearConsole(500);
                 talkingCats(L_CLOSED, R_OPEN);
                 isSpeaking(colour("Tweaker", "Blue"), "Ohh ok ok. Yeah ill take it.\n\n");
-                System.out.println("The customer paid " + colour(cName, "Green") + " and took their product...");
+                slowTxt("The customer paid " + cName + " and took their product...\n", 100);
                 stats[5] += 200;
             } else {
                 clearConsole(500);
                 talkingCats(L_OPEN, R_CLOSED);
-                isSpeaking(colour(cName, "Green"), "Trust me its worth it.\n");
+                isSpeaking(colour(cName, "Green"), "Just trust me its worth it.\n");
 
                 clearConsole(500);
                 talkingCats(L_CLOSED, R_OPEN);
-                isSpeaking(colour("Tweaker", "Red"), "Whatever dude. Just give me the boof.\n\n");
+                isSpeaking(colour("Tweaker", "Red"), "Yeah whatever dude. Just give me the boof.\n\n");
 
                 System.out.println("The "+colour("Tweaker", "RED")+" pulled out a knife!");
                 System.out.println("But " + colour(cName, "Green") + " has a gun...\n");
@@ -1410,7 +1408,7 @@ public class TheSlums {
                         slowTxt(cName + " popped a cap in his ass!\n", 50);
                         break;
                     default:
-                        isSpeaking(colour(cName, "Green"), "The fuck?! Im not tryna ruin my night today. Just take this and fuck off.\n\n");
+                        isSpeaking(colour(cName, "Green"), "Whoa buddy put the doohickey away! Im not tryna ruin my night today. Just take this and leave.\n\n");
                         System.out.println(cName + " gave the tweaker a laced spliff and then he left.\n");
                 }
             }
@@ -1428,7 +1426,7 @@ public class TheSlums {
             isSpeaking(colour(cName, "Green"), "And Im supposed to help how exactly?\n");
 
             clearConsole(500);
-            talkingCats(L_OPEN, R_CLOSED);
+            talkingCats(L_CLOSED, R_OPEN);
             isSpeaking(colour("Customer?", "Purple"), "C'mon man. I know you sell premium catnip.\n");
 
             clearConsole(700);
@@ -1439,8 +1437,18 @@ public class TheSlums {
             isSpeaking(colour(cName, "Green"), "I dunno who you think I am, but I dont sell that.\n    Im just enjoying my J on the street. Nothing illegal about that.\n");
 
             clearConsole(500);
-            talkingCats(L_OPEN, R_CLOSED);
-            isSpeaking(colour("Customer?", "Purple"), "Hehe. I dont want you to get in trouble.\n    I just want 3 ounces of some Silverwine Sorbet.\n");
+            talkingCats(L_CLOSED, R_OPEN);
+            isSpeaking(colour("Customer?", "Purple"), "Look I dont want to get you into any trouble.\n    I just want 3 ounces of some Silverwine Sorbet.\n");
+
+            if (skills[1] >= 20) {
+                clearConsole(700);
+                talkingCats(L_OPEN, R_CLOSED);
+                isSpeaking(colour(cName, "Green"), "Uhmm its actually called Silvervine... Sorbet...\n");
+    
+                clearConsole(500);
+                talkingCats(L_CLOSED, R_OPEN);
+                isSpeaking(colour("Customer?", "Red"), "I do not give a fuck just give me the narcotics.\n");
+            }
             System.out.println("\n1. Sell her 3 ounces\n2. Refuse to sell\n");
 
             switch (playerSelection()) {
@@ -1480,7 +1488,7 @@ public class TheSlums {
             slowTxt("Not even 5 minutes later, several NBI agents corner " + colour(cName, "Green") + " before they can escape.\n", 130);
 
             clearConsole(500);
-            talkingCats(L_CLOSED, Fed);
+            talkingCats(L_CLOSED, FED);
             isSpeaking(colour("Fed", "Red"), "Freeze! You are under arrest for distribution of a controled substance\n    and possesion of a deadly weapon. Turn around slowly and keep your hands in the air.\n\n");
 
             slowTxt(colour(cName, "Green") + " is facing up to 20 years in federal prison.\n", 100);
@@ -1576,7 +1584,7 @@ public class TheSlums {
                         clearConsole(1000);
                         talkingCats(L_OPEN, R_CLOSED);
                         isSpeaking(colour(cName, "Green"), "Now, don't be so bitter and ungrateful. Sure, the pay won't make you rich, but it's steady and\n"
-                        + "    better than digging through trash for scraps. Let's be honest—who else would even bother hiring you lot besides me?\n");
+                        + "    better than digging through trash for scraps. Let's be honest-who else would even bother hiring you lot besides me?\n");
 
                         clearConsole(1000);
                         talkingCats(L_CLOSED, R_OPEN);
@@ -1635,7 +1643,7 @@ public class TheSlums {
                     if (skills[1] >= 10) {
                         convincing++;
                         isSpeaking(colour(cName, "Green"), "The catch is simple: take the offer, or stay here.\n"
-                        + "    I'm not going to sugarcoat it—this isn't charity; it's business. But it's the kind of business that benefits both of us.\n");
+                        + "    I'm not going to sugarcoat it-this isn't charity; it's business. But it's the kind of business that benefits both of us.\n");
                         isSpeaking(colour("Bum", "Purple"), "You're not bad suit... Ill ask around to see if anyone else is interested.\n");
                     } else {
                         convincing--;
@@ -1768,6 +1776,15 @@ public class TheSlums {
             // https://www.patorjk.com/software/taag/#p=display&f=Wet%20Letter&t=Keji%20%20%20City%20%20%20Slums
 
             pause(300);
+            if (infected) {
+                slowTxt(cName + " is infected with the crimson plague!\n\n", 100);
+                stats[1] -= 3;
+            }
+
+            if (govRep < -5 || stats[5] < 0) {
+
+            }
+            printQuests(quest, questComplete);
             System.out.println("Where will " + cName + " go?\n");
             pause(100);
 
@@ -1823,6 +1840,22 @@ public class TheSlums {
                     "After all, "+cName+" would never be found in such an environment under normal circumstances.\n",
                 15);
 
+                if (infected) {
+                    slowTxt(cName + " is infected with the crimson plague!", 100);
+                    stats[1] -= 3;
+
+                    clearConsole(300);
+                    talkingCats(I_OPEN, FED);
+                    isSpeaking(colour(cName, "Green"), "HELP ME!!! PLEASE HELP! EVERYTHING HURTS!");
+
+                    clearConsole(300);
+                    talkingCats(I_CLOSED, FED);
+                    isSpeaking(colour(cName, "Green"), "STAY BACK! I WILL SHOOT");
+
+                    clearConsole(300);
+                    talkingCats(I_OPEN, FED);
+                    isSpeaking(colour(cName, "Green"), "Chill! I was kidding damn! Its not that serious...");
+                }
                 if (skills[3] >= 20) {
                     slowTxt("Maybe " + cName + " can sneak out through a less guarded area.\n", 100);
 
@@ -1837,7 +1870,7 @@ public class TheSlums {
                         } else {
                             slowTxt(cName + " got caught by a guard!\n\n", 50);
 
-                            if(combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Guard", 130, 30)) {
+                            if(combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Guard", 130, 30)) {
                                 govRep -= 1;
                             } else {
                                 slowTxt("\n" + cName + " went to jail!", 100);
@@ -1861,11 +1894,11 @@ public class TheSlums {
                         if (skills[1] >= 60) {
                             if (skills[1] >= 90) {
                                 clearConsole(500);
-                                talkingCats(L_OPEN, Fed);
+                                talkingCats(L_OPEN, FED);
                                 isSpeaking(colour(cName, "Green"), "Let me through!");
 
                                 clearConsole(500);
-                                talkingCats(L_CLOSED, Fed);
+                                talkingCats(L_CLOSED, FED);
                                 isSpeaking(colour("Guard", "blue"), "Ohh ok.");
 
                                 clearConsole(500);
@@ -1875,20 +1908,20 @@ public class TheSlums {
                                 continue;
                             } else {
                                 clearConsole(500);
-                                talkingCats(L_OPEN, Fed);
+                                talkingCats(L_OPEN, FED);
                                 isSpeaking(colour(cName, "Green"), "Can I leave... Please. Ill do "+colour("anything", "purple")+"!");
 
                                 clearConsole(500);
-                                talkingCats(BLUSH, Fed);
+                                talkingCats(BLUSH, FED);
                                 isSpeaking(colour("Guard", "purple"), "Anything?");
 
                                 clearConsole(500);
-                                talkingCats(SLEEP, Fed);
+                                talkingCats(SLEEP, FED);
                                 isSpeaking(colour("Guard", "purple"), "I want a tuna sandwich, and a NipCig MK4.");
 
                                 if (questComplete[0] && questComplete[9]) {
                                     clearConsole(500);
-                                    talkingCats(SMOL, Fed);
+                                    talkingCats(SMOL, FED);
                                     isSpeaking(colour(cName, "Green"), "I did say anything...");
 
                                     slowTxt("The Guard let " + cName + " through the gate!", 100);
@@ -1896,17 +1929,17 @@ public class TheSlums {
                                     continue;
                                 } else {
                                     clearConsole(500);
-                                    talkingCats(SMOL, Fed);
+                                    talkingCats(SMOL, FED);
                                     isSpeaking(colour(cName, "Green"), "Ohh...");
                                 }
                             }
                         } else {
                             clearConsole(500);
-                            talkingCats(BLUSH, Fed);
+                            talkingCats(BLUSH, FED);
                             isSpeaking(colour(cName, "Green"), "Can I leave... Please.");
 
                             clearConsole(500);
-                            talkingCats(SMOL, Fed);
+                            talkingCats(SMOL, FED);
                             isSpeaking(colour("Guard", "Red"), "Nope.");
                         }
                     }
@@ -1924,15 +1957,16 @@ public class TheSlums {
                         String[] guards = {"Guard", "Guard", "Guard"};
                         int[] guardHealth = {120, 120, 120};
                         int[] guardDmg = {20, 20, 20};
-                        madeIt[0] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Corporal Tiger", 150, 30);
+                        madeIt[0] = combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Corporal Tiger", 150, 30);
                         combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, guards, guardHealth, guardDmg, "", 0, 0);
-                        madeIt[1] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Luitenant Lightweight", 200, 40);
+                        madeIt[1] = combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Luitenant Lightweight", 200, 40);
                         combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, guards, guardHealth, guardDmg, "", 0, 0);
-                        madeIt[2] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Captain Bands", 300, 50);
+                        madeIt[2] = combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Captain Bands", 300, 50);
 
                         govRep -= 10;
                         if (madeIt[0] && madeIt[1] && madeIt[2]) {
-                            slowTxt(cName + " killed them all...", 130);
+                            clearConsole(300);
+                            slowTxt(colour(cName, "red") + " killed them all...", 130);
 
                             inSlums = false;
                             continue;
@@ -1945,6 +1979,435 @@ public class TheSlums {
                 }
             } else if (location.equals("The Factory")) { // __________________________________________________ Black Market
                 boolean foundIt = false;
+                boolean inMarkets = true;
+                String[] purchases = new String[10];
+                clearConsole(300);
+                slowTxt("\nThe Black Market is in a an abandoned sword factory which turned into a trade hub for outlaws and lowlives.\n", 100);
+                do {
+                    System.out.println("\n1. Leave the Factory\n2. Odd Objects\n3. Rick-Shack\n4. Armour-4-All\n5. Marlin's Mysteries\n");
+
+                    response = playerSelection();
+
+                    // Black Market Shops by Roberto
+
+                    if (response.equals("1")) {
+                        slowTxt("\nIt was too musty for " + cName + " so they left.", 100);
+                        inMarkets = false;
+                        continue;
+                    } else if (response.equals("2")) {
+                        String[] thingsSelling = {
+                            "Frozen Salmon",
+                            "Baseball Bat",
+                            "Coin Gun",
+                            "Leather Armor",
+                            "Scale Armor"
+                        };
+
+                        int[] itemsCost = {80,80,100,130,140};
+
+                        purchases = shopping(cName, stats, "Ol' Orbo", thingsSelling, itemsCost);
+
+                        for (int i = 0; i < 10; i++) {
+                            if (purchases[i] == null)
+                                continue;
+                            if (purchases[i].equals(thingsSelling[0])) {
+                                slowTxt(cName + " bought a " + thingsSelling[0] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[0] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Frozen Salmon";
+                                    cDmgType = "Blunt";
+                                    stats[6] = 25;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[0] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[0] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[1])) {
+                                slowTxt(cName + " bought a " + thingsSelling[1] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[1] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Baseball Bat";
+                                    cDmgType = "Blunt";
+                                    stats[6] = 22;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[1] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[1] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[2])) {
+                                slowTxt(cName + " bought a " + thingsSelling[2] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[2] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Coin Gun";
+                                    cDmgType = "Blunt";
+                                    stats[6] = 25;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[2] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[2] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[3])) {
+                                slowTxt(cName + " bought a " + thingsSelling[3] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[3] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Leather Armour";
+                                    cDmgRes = 0.6;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[3] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[3] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[4])) {
+                                slowTxt(cName + " bought a " + thingsSelling[4] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[4] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Scale Armour";
+                                    cDmgRes = 0.7;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[4] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[4] + ".\n", 100);
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
+                        clearConsole(500);
+                    } else if (response.equals("3")){
+                        String[] thingsSelling = {
+                            "Farmer's Sickle",
+                            "Sushi Blade",
+                            "Six Shooter",
+                            "Shotgun",
+                            "Sniper"
+                        };
+
+                        int[] itemsCost = {100,100,500,600,1400};
+
+                        purchases = shopping(cName, stats, "Shady Rick", thingsSelling, itemsCost);
+
+                        for (int i = 0; i < 10; i++) {
+                            if (purchases[i] == null)
+                                continue;
+                            if (purchases[i].equals(thingsSelling[0])) {
+                                slowTxt(cName + " bought a " + thingsSelling[0] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[0] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Farmer's Sickle";
+                                    cDmgType = "Sharp";
+                                    stats[6] = 38;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[0] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[0] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[1])) {
+                                
+                                slowTxt(cName + " bought a " + thingsSelling[1] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[1] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Sushi Blade";
+                                    cDmgType = "Sharp";
+                                    stats[6] = 30;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[1] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[1] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[2])) {
+                                slowTxt(cName + " bought a " + thingsSelling[2] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[2] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Six Shooter";
+                                    cDmgType = "Ranged";
+                                    stats[6] = 66;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[2] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[2] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[3])) {
+                                slowTxt(cName + " bought a " + thingsSelling[3] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[3] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Shotgun";
+                                    cDmgType = "Ranged";
+                                    stats[6] = 78;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[3] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[3] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[4])) {
+                                slowTxt(cName + " bought a " + thingsSelling[4] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[4] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Sniper";
+                                    cDmgType = "Ranged";
+                                    stats[6] = 115;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[4] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[4] + ".\n", 100);
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
+                        clearConsole(500);
+                    } else if (response.equals("4")){
+                        String[] thingsSelling = {
+                            "Plate Armor",
+                            "Riot Gear",
+                            "Soft Body Armor",
+                            "Ceramic Level III+ Plate Carrier",
+                            "Non-Explosive Reactive Body Armour"
+                        };
+
+                        int[] itemsCost = {180,420,425,750,1337};
+
+                        purchases = shopping(cName, stats, "Brutus", thingsSelling, itemsCost);
+
+                        for (int i = 0; i < 10; i++) {
+                            if (purchases[i] == null)
+                                continue;
+                            if (purchases[i].equals(thingsSelling[0])) {
+                                slowTxt(cName + " bought a " + thingsSelling[0] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[0] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Plate Armor";
+                                    cDmgRes = 0.8;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[0] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[0] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[1])) {
+                                slowTxt(cName + " bought a " + thingsSelling[1] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[1] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Riot Gear";
+                                    cDmgRes = 0.9;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[1] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[1] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[2])) {
+                                slowTxt(cName + " bought a " + thingsSelling[2] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[2] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Soft Body Armor";
+                                    cDmgRes = 1.0;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[2] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[2] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[3])) {
+                                slowTxt(cName + " bought a " + thingsSelling[3] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[3] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Ceramic Level III+ Plate Carrier";
+                                    cDmgRes = 1.5;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[3] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[3] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[4])) {
+                                slowTxt(cName + " bought a " + thingsSelling[4] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[4] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Non-Explosive Reactive Body Armour";
+                                    cDmgRes = 1.75;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[4] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[4] + ".\n", 100);
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
+                        clearConsole(500);
+                    } else if (response.equals("5")){
+                        String[] thingsSelling = {
+                            "Thermobaric-Warhead Anti-Personel Rocket Launcher",
+                            "Flamethrower",
+                            "Lightning Rod",
+                            "Samurai Armor",
+                            "Steel & Sorcery Cloak"
+                        };
+
+                        int[] itemsCost = {3999,1690,1899,256,2099};
+
+                        if (quest[2] != null && questComplete[2] == false && skills[1] >= 25) {
+                            clearConsole(300);
+                            talkingCats(L_OPEN, R_CLOSED);
+                            isSpeaking(cName, "Hey have you seen that thing guy is looking for?");
+
+                            clearConsole(300);
+                            talkingCats(L_CLOSED, R_OPEN);
+                            isSpeaking("Marlin", "Yep its up the alley and down the corner.");
+
+                            foundIt = true;
+                        }
+
+                        purchases = shopping(cName, stats,  "Marlin", thingsSelling, itemsCost);
+
+                        for (int i = 0; i < 10; i++) {
+                            if (purchases[i] == null)
+                                continue;
+                            if (purchases[i].equals(thingsSelling[0])) {
+                                slowTxt(cName + " bought a " + thingsSelling[0] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[0] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "TWAPR-L";
+                                    cDmgType = "Elemental";
+                                    stats[6] = 85;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[0] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[0] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[1])) {
+                                slowTxt(cName + " bought a " + thingsSelling[1] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[1] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Flamethrower";
+                                    cDmgType = "Elemental";
+                                    stats[6] = 120;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[1] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[1] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[2])) {
+                                slowTxt(cName + " bought a " + thingsSelling[2] + ", it is a weapon.\n", 100);
+                                slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[2] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    cWeapon = "Lightning Rod";
+                                    cDmgType = "Elemental";
+                                    stats[6] = 126;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[2] + "!\n", 100);
+                                    slowTxt("\nCurrent Weapon Stats:\nWeapon: " + cWeapon + "\nDamage: " + stats[6] + "\nDamage Type: " + cDmgType + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[2] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[3])) {
+                                slowTxt(cName + " bought a " + thingsSelling[3] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[3] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Samurai Armor";
+                                    cDmgRes = 0.75;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[3] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[3] + ".\n", 100);
+                                }
+                            } else if (purchases[i].equals(thingsSelling[4])) {
+                                slowTxt(cName + " bought a " + thingsSelling[4] + ", it is armour.\n", 100);
+                                slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+
+                                slowTxt("\n1. Equip " + thingsSelling[4] + "\n2. Throw it away\n", 10);
+
+                                if (playerSelection().equals("1")) {
+                                    armour = "Steel & Sorcery Cloak";
+                                    cDmgRes = 2.0;
+
+                                    slowTxt("\n" + cName + " equiped the " + thingsSelling[4] + "!\n", 100);
+                                    slowTxt("\nCurrent Armour Stats:\nEquipped: " + armour + "\nDamage Resistance: " + cDmgRes + "\n", 100);
+                                } else {
+                                    slowTxt("\n" + cName + " threw away the " + thingsSelling[4] + ".\n", 100);
+                                }
+                            } else {
+                                continue;
+                            }
+                        }
+                        clearConsole(500);
+                    } else {
+                        slowTxt("Thats not... no.", 130);
+                        pause(300);
+                    }
+                } while (inMarkets);
+
                 if (quest[2] != null && questComplete[2] == false) {
                     slowTxt("\n" + cName + " is looking for the thing that the guy lost\n.", 100);
                     if (foundIt) {
@@ -2003,7 +2466,7 @@ public class TheSlums {
                                 talkingCats(L_OPEN, R_CLOSED);
                                 isSpeaking(colour(cName, "Green"), "Im here to arrest you for your crimes!");
 
-                                questComplete[1] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Slasha", 200, 20);
+                                questComplete[1] = combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Slasha", 200, 20);
                                 if (questComplete[1]) {
                                     clearConsole(1000);
                                     slowTxt(cName + " claimed the bounty on Manathan 'Slasha' Jhonoson, The South Steel Road Slasher. (+500)", 100);
@@ -2015,9 +2478,9 @@ public class TheSlums {
                         } else {
                             clearConsole(500);
                             talkingCats(L_OPEN, R_CLOSED);
-                            isSpeaking(colour(cName, "Green"), "Im going to murder you legally...");
+                            isSpeaking(colour(cName, "Red"), "Im going to murder you legally...");
 
-                            questComplete[1] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Slasha", 200, 20);
+                            questComplete[1] = combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Slasha", 200, 20);
                             if (questComplete[1]) {
                                 clearConsole(1000);
                                 slowTxt(cName + " claimed the bounty on Manathan 'Slasha' Jhonoson, The South Steel Road Slasher. (+500)", 100);
@@ -2057,7 +2520,7 @@ public class TheSlums {
                     }
                 }
 
-                slowTxt("But it is in...\n", 100);
+                slowTxt("\n" + cName + " is in...\n", 100);
                 // https://www.patorjk.com/software/taag/#p=display&f=Caligraphy&t=%20%20%20%20%20Stabbas%0ATerritory
                 slowTxt(
                     "                                                                                                                   \n" + 
@@ -2102,12 +2565,245 @@ public class TheSlums {
 
                 slowTxt("\n" + cName + "'s Stabbas Reputation: " + stabbasRep + "\n", 100);
 
+                if (stabbasRep <= -5 || shoottasRep >= 5) {
+                    String[] stabbas = {"Stabba", "Stabba", "Stabba"};
+                    int[] stabHp = {(100 + stats[2] * 10) + 10, (100 + stats[2] * 10), 100};
+                    int[] stabDmg = {10*stats[2], 10+stats[2]*10, 10+stats[2]};
+                    slowTxt(cName + " isnt welcome around here...\n", 100);
+                    if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Cleater", 130, 30)) {
+                        slowTxt(cName + " defeated Cleater (+300)", 100);
+                        stats[5] += 300;
 
+                        if (!combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Steve", 115, 5)) {
+                            slowTxt(cName + " spared Steve (+300)", 100);
+                            stats[5] += 300;
+
+                            if (!combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Bloy", 150, 37)) {
+                                combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, stabbas, stabHp, stabDmg, "", 0, 0);
+                            } else {
+                                slowTxt(cName + " defeated Bloy (+300)", 100);
+                                stats[5] += 300;
+
+                                if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Shanka", 200, 50)) {
+                                    slowTxt("The Steel Road is "+colour("flooded", "red")+"...\n", 100);
+                                } else {
+                                    clearConsole(300);
+                                    slowTxt(cName + " gained respect for surviving that long.\n", 130);
+                                    shoottasRep += 5;
+                                    stabbasRep += 5;
+                                }
+                            }
+                        } else {
+                            combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, stabbas, stabHp, stabDmg, "", 0, 0);
+                        }
+                    } else {
+                        if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Jhon Stab", 100, 10)) {
+                            combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, stabbas, stabHp, stabDmg, "", 0, 0);
+                        } else {
+                            slowTxt(cName + " escaped from Steel Road.", 100);
+                        }
+                    }
+
+                    clearConsole(500);
+                    slowTxt(cName + " was stabbed by a bloody knife!", 100);
+                    infected = true;
+                } else if (stabbasRep < 0) {
+                    slowTxt(cName + " should be careful around here...\n", 100);
+                } else if (stabbasRep >= 5) {
+                    slowTxt(cName + " gained some respect with the stabbas and can now roll dice with the gang members.\n", 100);
+
+                    System.out.println("\n1. Gamble\n2. Go home\n");
+
+                    if (playerSelection().equals("1")) {
+                        stats[5] = dice(cName, stats[5], "Stabba", 1000);
+                    }
+                } else if (stabbasRep >= 0) {
+                    slowTxt(cName + " can do some things to gain respect with the stabbas\n", 100);
+
+                    System.out.println("\n1. Tag a wall (+1)\n2. Sell Nip (+3)\n3. Stab Shoottas (+5)\n");
+                    response = playerSelection();
+
+                    if (response.equals("1")) {
+                        if (rand.nextBoolean() == true) {
+                            slowTxt(cName + " tagged a liquor store.", 100);
+                            stabbasRep += 1;
+                        } else {
+                            slowTxt(cName + " was stabbed for trying to tag a liquor store.", 100);
+                            stats[0] -= 10;
+                            infected = true;
+                        }
+                    } else if (response.equals("2")) {
+                        if (rand.nextBoolean() == true) {
+                            slowTxt(cName + " sold an ounce of stems and seeds.", 100);
+                            stabbasRep += 3;
+                        } else {
+                            slowTxt(cName + " was stabbed for trying to sell an ounce of stems and seeds.", 100);
+                            stats[0] -= 10;
+                            infected = true;
+                        }
+                    } else if (response.equals("3")) {
+                        if (rand.nextBoolean() == true) {
+                            slowTxt(cName + " threw knives at shoottas on their way to the liquor store.", 100);
+                            stabbasRep += 5;
+                            shoottasRep -= 5;
+                        } else {
+                            slowTxt(cName + " was shot for trying to throw knives at shoottas.", 100);
+                            stats[0] -= 38;
+                        }
+                    } else {
+                        slowTxt(cName + " left Steel Road.", 100);
+                    }
+                }
             } else if (location.equals("Greysand Avenue")) { // __________________________________________________ Faction 2 Area
                 if (quest[3] != null && questComplete[3] == false) {
                     slowTxt(cName + " delivered the parcel! (+300)", 100);
                     questComplete[3] = true;
                     stats[5] += 300;
+                }
+
+                slowTxt("\n" + cName + " is in...\n", 100);
+                // https://www.patorjk.com/software/taag/#p=display&f=Caligraphy&t=%20%20%20%20Shoottas%0ATerritory
+                slowTxt(
+                    "                                                                                                                \n" + 
+                    "                  *******      *                                                                                \n" + 
+                    "                *       ***  **                                  *         *                                    \n" + 
+                    "               *         **  **                                 **        **                                    \n" + 
+                    "               **        *   **                                 **        **                                    \n" + 
+                    "                ***          **           ****       ****     ********  ********               ****             \n" + 
+                    "               ** ***        **  ***     * ***  *   * ***  * ********  ********     ****      * **** *          \n" + 
+                    "                *** ***      ** * ***   *   ****   *   ****     **        **       * ***  *  **  ****           \n" + 
+                    "                  *** ***    ***   *** **    **   **    **      **        **      *   ****  ****                \n" + 
+                    "                    *** ***  **     ** **    **   **    **      **        **     **    **     ***               \n" + 
+                    "                      ** *** **     ** **    **   **    **      **        **     **    **       ***             \n" + 
+                    "                       ** ** **     ** **    **   **    **      **        **     **    **         ***           \n" + 
+                    "                        * *  **     ** **    **   **    **      **        **     **    **    ****  **           \n" + 
+                    "              ***        *   **     **  ******     ******       **        **     **    **   * **** *            \n" + 
+                    "             *  *********    **     **   ****       ****         **        **     ***** **     ****             \n" + 
+                    "            *     *****       **    **                                             ***   **                     \n" + 
+                    "            *                       *                                                                           \n" + 
+                    "             **                    *                                                                            \n" + 
+                    "                                  *                                                                             \n" + 
+                    "                                 *                                                                              \n" + 
+                    "                                                                                                                \n" + 
+                    "                                                                                                                \n" + 
+                    "  ****           *                                                                                              \n" + 
+                    " *  *************                                        *         *                                            \n" + 
+                    "*     *********                                         ***       **                                            \n" + 
+                    "*     *  *                                               *        **                                            \n" + 
+                    " **  *  **                   ***  ****    ***  ****             ********    ****    ***  ****    **   ****      \n" + 
+                    "    *  ***            ***     **** **** *  **** **** * ***     ********    * ***  *  **** **** *  **    ***  *  \n" + 
+                    "   **   **           * ***     **   ****    **   ****   ***       **      *   ****    **   ****   **     ****   \n" + 
+                    "   **   **          *   ***    **           **           **       **     **    **     **          **      **    \n" + 
+                    "   **   **         **    ***   **           **           **       **     **    **     **          **      **    \n" + 
+                    "   **   **         ********    **           **           **       **     **    **     **          **      **    \n" + 
+                    "    **  **         *******     **           **           **       **     **    **     **          **      **    \n" + 
+                    "     ** *      *   **          **           **           **       **     **    **     **          **      **    \n" + 
+                    "      ***     *    ****    *   ***          ***          **       **      ******      ***          *********    \n" + 
+                    "       *******      *******     ***          ***         *** *     **      ****        ***           **** ***   \n" + 
+                    "         ***         *****                                ***                                              ***  \n" + 
+                    "                                                                                                    *****   *** \n" + 
+                    "                                                                                                  ********  **  \n" + 
+                    "                                                                                                 *      ****    \n" + 
+                    "                                                                                                                \n" + 
+                    "                                                                                                                "
+                    
+                    
+                , 1);
+
+                slowTxt("\n" + cName + "'s Shoottas Reputation: " + shoottasRep + "\n", 100);
+
+                if (shoottasRep <= -5 || stabbasRep >= 5) {
+                    String[] shoottas = {"Shootta", "Shootta", "Shootta"};
+                    int[] shootHp = {(100 + stats[2] * 10) + 10, (100 + stats[2] * 10), 100};
+                    int[] shootDmg = {10*stats[2], 10+stats[2]*10, 10+stats[2]};
+                    slowTxt(cName + " isnt welcome around here...\n", 100);
+                    if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Fortey F.", 145, 45)) {
+
+                        slowTxt(cName + " defeated Fortey Feigh (+450)", 100);
+                        stats[5] += 450;
+                        if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Tutu T.", 223, 23)) {
+
+                            slowTxt(cName + " defeated Tutu Thresh (+223)", 100);
+                            stats[5] += 223;
+                            if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Threo E.", 308, 38)) {
+
+                                slowTxt(cName + " defeated Threo Heit (+308)", 100);
+                                stats[5] += 308;
+                                if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Fiddy Cal.", 355, 50)) {
+
+                                    slowTxt(cName + " defeated Fiddy Caliebur (+500)\n", 100);
+                                    stats[5] += 500;
+                                    slowTxt("\nThe Greysand Avenue turned red...", 100);
+                                } else {
+                                    clearConsole(300);
+                                    slowTxt(cName + " gained respect for surviving that long.\n", 130);
+                                    shoottasRep += 5;
+                                    stabbasRep += 5;
+                                }
+                            } else {
+                                combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, shoottas, shootHp, shootDmg, "", 0, 0);
+                            }
+                        } else {
+                            combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, shoottas, shootHp, shootDmg, "", 0, 0);
+                        }
+                    } else {
+                        if (combat(cName, stats, cDmgRes, cDmgType, skills, damageMultipliers, "Nine", 199, 19)) {
+
+                            slowTxt(cName + " defeated Nine (+199)", 100);
+                            stats[5] += 199;
+
+                            slowTxt("\n\nBut they got jumped by shoottas!\n", 100);
+                            combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, shoottas, shootHp, shootDmg, "", 0, 0);
+                        } else {
+                            slowTxt(cName + " escaped from Greysand Avenue.", 100);
+                        }
+                    }
+
+                    clearConsole(500);
+                } else if (shoottasRep < 0) {
+                    slowTxt(cName + " should be careful around here...\n", 100);
+                }  else if (shoottasRep >= 5) {
+                    slowTxt(cName + " gained some respect with the shoottas and can now roll dice with the gang members.\n", 100);
+
+                    System.out.println("\n1. Gamble\n2. Go home\n");
+
+                    if (playerSelection().equals("1")) {
+                        stats[5] = dice(cName, stats[5], "Shootta", 1000);
+                    }
+                } else if (shoottasRep >= 0) {
+                    slowTxt(cName + " can do some things to gain respect with the Shoottas\n", 100);
+
+                    System.out.println("\n1. Tag a wall (+1)\n2. Sell Nip (+3)\n3. Shoot Stabbas (+5)\n");
+                    response = playerSelection();
+
+                    if (response.equals("1")) {
+                        if (rand.nextBoolean() == true) {
+                            slowTxt(cName + " tagged a liquor store.", 100);
+                            shoottasRep += 1;
+                        } else {
+                            slowTxt(cName + " was shot for trying to tag a liquor store.", 100);
+                            stats[0] -= 20;
+                        }
+                    } else if (response.equals("2")) {
+                        if (rand.nextBoolean() == true) {
+                            slowTxt(cName + " sold an ounce of stems and seeds.", 100);
+                            shoottasRep += 3;
+                        } else {
+                            slowTxt(cName + " was shot for trying to sell an ounce of stems and seeds.", 100);
+                            stats[0] -= 20;
+                        }
+                    } else if (response.equals("3")) {
+                        if (rand.nextBoolean() == true) {
+                            slowTxt(cName + " shot at stabbas on their way to the liquor store.", 100);
+                            shoottasRep += 5;
+                            stabbasRep -= 5;
+                        } else {
+                            slowTxt(cName + " was stabbed for trying to shoot stabbas.", 100);
+                            stats[0] -= 10;
+                        }
+                    } else {
+                        slowTxt(cName + " left G. Ave.", 100);
+                    }
                 }
             } else if (location.equals("Tetanus Tapwater")) { // __________________________________________________ Saloon
                 clearConsole(1000);
@@ -2118,7 +2814,8 @@ public class TheSlums {
                 do {
                     System.out.println("\n1. Buy a drink\n2. Look at the job board\n3. Leave tavern\n");
 
-                    if (playerSelection().equals("1")) {
+                    response = playerSelection();
+                    if (response.equals("1")) {
                         String[] drinkMenu = {
                             "Booz's Brew",
                             "'Tequila'",
@@ -2325,8 +3022,6 @@ public class TheSlums {
 
                     clearConsole(1000);
                 } while (inPub);
-
-
             }
 
         }
@@ -2749,6 +3444,12 @@ public static String[] shopping(String cName, int[] stats, String mName, String[
     String[] itemsBought = new String[10];
     int howMany = 0;
     boolean inShop = true;
+
+    if (stats[5] < 0) {
+        slowTxt("\n" + cName + " already has a negative balance!\n", 100);
+        inShop = false;
+    }
+
     while (inShop) {
         System.out.println("\n" + cName + "'s money: " + stats[5]);
         System.out.print("Items Bought: ");
@@ -2828,7 +3529,7 @@ public static String[] shopping(String cName, int[] stats, String mName, String[
 // __________________________________________________  Turn Based Combat System  __________________________________________________
 
 // Method that starts and ends combat also sets lives if the player died
-public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDamage, double cDmgRes, String cDmgType, int[] skills, double[] damageMultipliers, int luck, int[] stats, String eName, int eHealth, int eDamage) {
+public static boolean combat(String cName, int[] stats, double cDmgRes, String cDmgType, int[] skills, double[] damageMultipliers, String eName, int eHealth, int eDamage) {
     clearConsole(5000);
     // Color Variables
     final String RESET = "\u001B[0m"; // Resets color (needed after every change)
@@ -2872,12 +3573,12 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
     }
 
     // Damage equation (takes damage, multiplies it by the damage multiplier, then adds bonus for strength)
-    damage = (int)((cDamage*dmgMult) + (skills[0]/10));
+    damage = (int)((stats[6]*dmgMult) + (skills[0]/10));
 
     // Keeps going until character kills the enemy or runs away (both count as a win tho)
     while (inCombat) {
         // Displays character and the enemy's health
-        System.out.println(cName + "'s health: " + cHealth + "/" + cMaxHealth);
+        System.out.println(cName + "'s health: " + stats[0] + "/" + stats[1]);
         System.out.println(eName + "'s health: " + eHealth);
 
 
@@ -2889,7 +3590,7 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
         switch (playerSelection()) {
             case "1": // If player decides to fight...
                 for (int i = 0; i < turns; i++) { // number of attacks determined by stamina
-                    cHitChance = rand.nextInt(20) + 1 + luck; // "20 sided die" determines if character's attack hit
+                    cHitChance = rand.nextInt(20) + 1 + stats[4]; // "20 sided die" determines if character's attack hit
  
                     if (cHitChance >= 20) { // character does double damage if a 20 or higher is rolled
                         System.out.println(GREEN + "*CRITICAL HIT*");
@@ -2917,7 +3618,7 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
                 break;
             case "2": // If the player tries to run
                 escapeChance = rand.nextInt(100) + 1;
-                if (escapeChance < (skills[3] + luck*10)) { // Ends combat if character's sneak skill is higher than the escape chance (0-100 roll)
+                if (escapeChance < (skills[3] + stats[4]*10)) { // Ends combat if character's sneak skill is higher than the escape chance (0-100 roll)
                     System.out.println(cName + " got away safely!\n");
                     inCombat = false;
                     continue;
@@ -2943,15 +3644,15 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
 
             if (eHitChance >= 18) { // Ctritical hit chance is lower for enemy so that ranged weapons are not too powerful (they still might be)
                 System.out.println(RED + eName + " got a critical hit!");
-                cHealth -= enemyDamage*2;
+                stats[0] -= enemyDamage*2;
                 System.out.println(eName + RESET + " attacked " + cName + " and did " + enemyDamage*2 + " damage!\n");
             } else {
-                cHealth -= enemyDamage;
+                stats[0] -= enemyDamage;
                 System.out.println(RED + eName + RESET + " attacked " + cName + " and did " + enemyDamage + " damage!\n");
             }
 
             // Removes a life if the enemy kills character
-            if (cHealth <= 0) {
+            if (stats[0] <= 0) {
                 System.out.println("\n" + RED + cName + " died!\n" + RESET);
                 
                 stats[3]--;
@@ -2968,7 +3669,7 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
                 System.out.println(GREEN + "BUT THAT DIDNT STOP " + cName.toUpperCase() + "!\n" + RESET);
                 slowTxt("Lives left: " + stats[3], 130);
                 damage += 10;
-                cHealth = cMaxHealth;
+                stats[0] = stats[1];
             }
         } else {
             System.out.println(RED + eName + " missed!\n" + RESET);
@@ -3330,6 +4031,21 @@ public static double[] increaseDamage(String cName, double[] damageMultipliers) 
     return damageMultipliers;
 }
 
+// Method that prints out quests
+public static void printQuests(String[] quest, boolean[] questComplete) {
+    slowTxt("Quests:\n", 100);
+    for (int i = 0; i < 10; i++) {
+        if (quest[i] == null) {
+            continue;
+        }
+
+        slowTxt(quest[i] + " ", 100);
+        if (questComplete[i])
+            slowTxt("[Completed]", 100);
+        System.out.println("");
+    }
+    System.out.println("");
+}
 // __________________________________________________  End of TBCS  __________________________________________________
 
 
