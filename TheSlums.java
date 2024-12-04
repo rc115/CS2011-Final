@@ -57,12 +57,16 @@ public class TheSlums {
           + "\n              _\\ \\/ / // /  ' \\(_-<      "
           + "\n             /___/_/\\_,_/_/_/_/___/      "
           , "PURPLE")
-          + "\n               Version 0.08.120224"
+          + "\n               Version 1.09.120324"
           + "\n" 
         );
 
-        if(args.length != 0 && args[0].equals("-help"))
+        boolean helpMe = false;
+        if(args.length != 0 && args[0].equals("-help")) {
             slowTxt("\n\nYou are in " + colour("'help'", "Green") + " mode. This wont make the game easier, but it will add hints to make it more understandable.\n\n", 100);
+            helpMe = true;
+        }
+
 
 
     // __________________________________________________ varHell __________________________________________________
@@ -72,7 +76,7 @@ public class TheSlums {
         boolean nameSet = false;
         String response;
 
-        int[] stats = {100, 100, 1, 9, 0, 0};
+        int[] stats = {100, 100, 1, 9, 0, 0, 5};
         // Old Stats:
         // int cHealth = 100; --->  stats[0]
         // int cMaxHealth = 100; ---> stats[1]
@@ -80,6 +84,7 @@ public class TheSlums {
         // int lives = 9; ---> stats[3]
         // int luck = 0; ---> stats[4]
         // int money = 0; ---> stats[5]
+        // int cDamage = 5; ---> stats[6]
 
         
         int[] skills = new int[4];
@@ -92,7 +97,6 @@ public class TheSlums {
         // Combat Variables
         String cWeapon = "Fists";
         String cDmgType = "Blunt";
-        int cDamage = 5;
         String armour = "Clothes";
         double cDmgRes = 0.5;
         boolean wonCombat = false;
@@ -104,7 +108,6 @@ public class TheSlums {
         // Quest Variables
         String[] quest = new String[10];
         boolean[] questComplete = new boolean[10];
-        int quests = 0;
 
         // Reputation variables (a group/gang will attack the character if their reputation is too low)
         // These should also be able to fit in a list I just wanted to visualize it better
@@ -115,14 +118,14 @@ public class TheSlums {
         boolean isRat = false;
 
         // Faces for talkingCats() Method
-        final String[] TEMPLATE = {
-            "      ____________    ",
-            "     /            \\   ",
-            "    |   o     o   |   ",
-            "    |      b      |   ",
-            "    |     ___     |   ",
-            "    \\____________/    "
-        };
+        // final String[] TEMPLATE = {
+        //     "      ____________    ",
+        //     "     /            \\   ",
+        //     "    |   o     o   |   ",
+        //     "    |      b      |   ",
+        //     "    |     ___     |   ",
+        //     "    \\____________/    "
+        // };
 
         final String[] L_CLOSED = {
             "       /\\      /\\     ",
@@ -142,6 +145,26 @@ public class TheSlums {
             "    |      >      |   ",
             "    |      O      |   ",
             "    \\____________/    "
+        };
+
+        final String[] I_OPEN = {
+            "       /\\      /\\     ",
+            "      "+colour("/", "red")+"  \\____/  \\    ",
+            "     /  _     _   \\   ",
+            "    |"+colour(".", "red")+"  o     o  "+colour(".", "red")+"|   ",
+            "    "+colour("| ..", "red")+"   >      |   ",
+            "    "+colour("|..", "red")+"    O   "+colour(".", "red")+"  |   ",
+            "    \\_"+colour(".", "red")+"_"+colour(".", "red")+"________/    "
+        };
+
+        final String[] I_CLOSED = {
+            "       /\\      /\\     ",
+            "      "+colour("/", "red")+"  \\____/  \\    ",
+            "     /  _     _   \\   ",
+            "    |"+colour(".", "red")+"  o     o  "+colour(".", "red")+"|   ",
+            "    "+colour("| ..", "red")+"   >      |   ",
+            "    "+colour("|..", "red")+"   ___  "+colour(".", "red")+"  |   ",
+            "    \\_"+colour(".", "red")+"_"+colour(".", "red")+"________/    "
         };
 
         final String[] SLEEP = {
@@ -204,6 +227,7 @@ public class TheSlums {
             "    \\____________/    "
         };
 
+        boolean infected = false;
         boolean orbs = false; // Quest variable for unlockable drink
 
     // __________________________________________________  varHell __________________________________________________
@@ -212,8 +236,8 @@ public class TheSlums {
 
     // __________________________________________________ Character Creator __________________________________________________
 
-        if(args.length != 0 && args[0].equals("-help"))
-            slowTxt("Enter the name you would like to be reffered to as in-game.", 100);
+        if (helpMe)
+            slowTxt("\nEnter the name you would like to be reffered to as in-game.\n", 100);
         // While loop runs until player chooses character's name
         while (!nameSet) {
             System.out.println("\n____________________________________________________________________________________________________\n");
@@ -235,8 +259,62 @@ public class TheSlums {
             }
         }
 
+        if (helpMe) {
+            slowTxt("Your characters skills determine things like chances for success.\n", 100);
+            slowTxt("A balanced character is recommended for beginners (10 on each and +10 on any).", 100);
+        }
         skills = setSkills(skills);
+
+        if (helpMe) {
+            slowTxt("\nYour characters damage multipliers determine how much damage you do with that type of weapon.\n", 100);
+            slowTxt("\nFor example: A baseball bat does 11 blunt damage,\n", 100);
+            slowTxt(" \nbut a 0.0 multiplier in blunt will make it do 0 damage, and a 1.5 mult will do 16 damage.\n", 100);
+        }
         damageMultipliers = setDamageMultipliers(damageMultipliers);
+
+        if (helpMe) {
+            slowTxt("This tutorial will hopefully help you navigate the slums successfully...\n", 100);
+            pause(300);
+            slowTxt(
+                "There are two types of player choices in this game...\n\n"
+            +   "Number-based choices (EX: 1. Choice 1, 2. Choice 2)\n\n"
+            +   "Text box entries (EX: Enter something after the colon: {Player Input goes here})\n\n"
+            , 100);
+            pause(300);
+            slowTxt("You can sometimes enter choices not available to the player...\n", 100);
+            slowTxt("Or you can just enter 'exit' to quit the game at any moment.", 100);
+            clearConsole(300);
+            slowTxt("Combat Tutorial...\n\n", 100);
+            slowTxt("Fighting enemies in the slums is as easy as rolling a dice...\n\n", 100);
+            slowTxt(
+                "Because thats kind of what happens to determine if a hit makes contact,\n"
+            +   "If "+cName+" or enemy roll a 10 or higher the attack hits.\n"
+            +   "This keeps happening until the enemy is dead or "+cName+" runs out of lives.\n"
+            +   cName + " has 9 lives, because   , once they are all gone the game ends.\n\n"
+            +   "There is also a alternate combat method for 1 versus 3 fights and 2 versus 3 fights.\n"
+            +   "All other fights are one-on-one and are either win or run away."
+            , 100);
+            clearConsole(500);
+
+            slowTxt("Would you like to practice fighting?\nNote: Your lives will not be lost here.\n\n", 100);
+
+            slowTxt("Type 'Sure' Or '1' to fight Sackary the fighting bag: ", 100);
+
+            response = playerSelection();
+            if (response.equals("Sure") || response.equals("1")) {
+                final int[] TEMP_STATS = stats;
+                combat(cName, 100, 100, 30, 1.0, "Sharp", skills, damageMultipliers, 2, TEMP_STATS, "Sackary", 100, 10);
+
+                clearConsole(500);
+                slowTxt(
+                    cName + " was using a 'Sharp' weapon, if your damage multiplier was too low it might have been harder to defeat that enemy.\n"
+                +   "This applies to all weapons, if your damage mults are heavy to one weapon consider using that type more often.\n", 100);
+            } else {
+                clearConsole(500);
+                slowTxt("Tutorial Complete! Good Luck!\n", 100);
+                clearConsole(200);
+            }
+        }
 
         System.out.println("\n____________________________________________________________________________________________________\n");
         System.out.print("Choose your character's background:\n");
@@ -266,24 +344,24 @@ public class TheSlums {
             skills[1] += 10;
             stats[5] = 100;
             cWeapon = "Cleaver";
-            cDamage = 11;
+            stats[6] = 11;
             cDmgType = "Sharp";
         } else if (background.equals("Steel")) {
             skills[0] += 10;
             stats[5] = 250;
             cWeapon = "Steel Pipe";
-            cDamage = 10;
+            stats[6] = 10;
         } else if (background.equals("Farmer")) {
             skills[2] += 10;
             stats[5] = 50;
             cWeapon = "Pesticide Sprayer";
-            cDamage = 8;
+            stats[6] = 8;
             cDmgType = "Elemental";
         } else if (background.equals("Dealer")) {
             skills[3] += 10;
             stats[5] = 50;
             cWeapon = "9mm";
-            cDamage = 9;
+            stats[6] = 9;
             cDmgType = "Ranged";
         } else if (background.equals("CEO")) {
             stats[4] = 1;
@@ -305,7 +383,7 @@ public class TheSlums {
             stats[5] = 1000000;
             stats[4] = 10;
             cWeapon = "Dragonn KLR 20mm Anti-Matiriel Rifle";
-            cDamage = 100;
+            stats[6] = 100;
             cDmgType = "Ranged";
             armour = "T-Shirt and Jorts";
             cDmgRes = 3.0;
@@ -319,6 +397,34 @@ public class TheSlums {
             clearConsole(3000);
 
             System.out.println("\n\nEntering debug area...\n\n");
+
+            // Shop example:
+            System.out.println("\n1. Buy Smt\n3. Leave Shop\n"); // Choice for buying or leaving
+
+            if (playerSelection().equals("1")) { // If player chooses to buy it sets everything up
+
+                // Need to set up a list with all the things they are selling (Can only be 5 Items per shop)
+                String[] thingsSelling = {
+                    "Thing 1",
+                    "Other Thing",
+                    "Thingy",
+                    "Thing 3",
+                    "Item"
+                };
+
+                // Different list with the prices (Also only 5 Items)
+                int[] itemsCost = {3,4,5,2,3};
+
+                // Call method to purchase items
+                shopping(cName, stats, "Merchant Name", thingsSelling, itemsCost);
+
+                // ^^^ This is what the parentheses means  VVV
+                // (  "Character Name"  ,   stats  ,   "Merchant name"  ,   List of items they sell,   List of prices  )
+
+                clearConsole(500);
+            } else {
+                // Would leave shop if set up
+            }
 
             System.out.println(colour(
                 "CHARACTER STATS:\n\n"
@@ -339,7 +445,7 @@ public class TheSlums {
                 + "Elemental (" + damageMultipliers[2] + ")\n"
                 + "Ranged (" + damageMultipliers[3] + ")\n\n"
                 + "WEAPON: " + cWeapon + "\n"
-                + "DAMAGE: "+ cDamage +"\n"
+                + "DAMAGE: "+ stats[6] +"\n"
                 + "DAMAGE TYPE: " + cDmgType + "\n\n"
                 + "ARMOUR: " + armour + "\n"
                 + "DAMAGE RESISTANCE: " + cDmgRes + "\n\n"
@@ -351,7 +457,7 @@ public class TheSlums {
             // Coloured text test might change depending on how were taught in class
             System.out.println(colour("Goober: Oi! Were gonna fight now!", "RED"));
             System.out.println(colour(cName + ": Ok.", "GREEN"));
-            wonCombat = combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Goober", 100, 10);
+            wonCombat = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Goober", 100, 10);
             stats[2] = levelUp(cName, stats[2]);
             stats[1] += 10;
             stats[0] = stats[1];
@@ -427,7 +533,7 @@ public class TheSlums {
                         if (stats[5] >= itemCost[1]) {
                             stats[5] -= itemCost[1];
                             cWeapon = "Sword";
-                            cDamage = 13;
+                            stats[6] = 13;
                             cDmgType = "Sharp";
                             System.out.println(colour("Mu'Guffin: Thats a #1 seller.", "YELLOW"));
                         } else {
@@ -438,7 +544,7 @@ public class TheSlums {
                         if (stats[5] >= itemCost[2]) {
                             stats[5] -= itemCost[2];
                             cWeapon = "Baseball Bat";
-                            cDamage = 11;
+                            stats[6] = 11;
                             cDmgType = "Blunt";
                             System.out.println(colour("Mu'Guffin: Good whacker if you need to whack.", "YELLOW"));
                         } else {
@@ -449,7 +555,7 @@ public class TheSlums {
                         if (stats[5] >= itemCost[3]) {
                             stats[5] -= itemCost[3];
                             cWeapon = "Thermobaric Anti-Personel Rocket Launcher";
-                            cDamage = 300;
+                            stats[6] = 300;
                             cDmgType = "Elemental";
                             System.out.println(colour("Mu'Guffin: You dont need allat for street cats.", "YELLOW"));
                         } else {
@@ -476,13 +582,13 @@ public class TheSlums {
             System.out.println(colour("Silly Fella: And Im gonna wait patiently here. Surely nothing bad happens to my friend.", "RED"));
             System.out.println(colour(cName + ": What?", "GREEN"));
 
-            wonCombat = combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Goofy Fella", 50, 5);
+            wonCombat = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Goofy Fella", 50, 5);
 
             if (wonCombat)
                 System.out.println(colour("Silly Fella: You killed my buddy! Now Im going to stab you... with a gun!", "RED"));
             else
                 System.out.println(colour("Silly Fella: Hey come back here! Its my turn to stab you.", "RED"));
-            combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Silly Fella", 150, 20);
+            combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Silly Fella", 150, 20);
             stats[2] = levelUp(cName, stats[2]);
             stats[1] += 10;
             stats[0] = stats[1];
@@ -509,7 +615,7 @@ public class TheSlums {
                     } else {
                         System.out.println(colour("Big Shootta: Dont worry kid well keep you safe...\nBut we gotta make sure you're not a cop...", "PURPLE"));
 
-                        combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Detective", 10, 0);
+                        combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Detective", 10, 0);
                         System.out.println(colour("Big Shootta: Sloppy work pal... but you're in.", "BLUE"));
                         shoottasRep += 3;
                         stabbasRep -= 1;
@@ -535,9 +641,9 @@ public class TheSlums {
             if (shoottasRep < 0 && stabbasRep < 0) {
                 System.out.println(colour(cName, "GREEN") + " got jumpped in an allyway by multiple people!");
 
-                combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
-                combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
-                combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
+                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
+                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
+                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
 
                 stats[2] = levelUp(cName, stats[2]);
                 stats[1] += 10;
@@ -547,12 +653,12 @@ public class TheSlums {
 
                 System.out.println(colour("Unfortunately... " + cName + " pissed off more than one gang!", "RED"));
 
-                combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Shootta", 100, 20);
-                combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Shootta", 100, 20);
+                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Shootta", 100, 20);
+                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Shootta", 100, 20);
             } else if (shoottasRep > 0 && stabbasRep < 0) {
                 System.out.println(colour(cName, "Green") + " got jumpped in an allyway by multiple people!");
 
-                combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
+                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Stabba", 100, 10);
 
                 System.out.println(colour("A few Shoottas heard the commotion, and picked off the rest.", "BLUE"));
             } else if (stabbasRep < 0) {
@@ -568,7 +674,7 @@ public class TheSlums {
 
             if (cName.equals("D. Bugger")) {
                 System.out.println("Ad Min: Why dont you pick on someone your own size!");
-                combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Ad Min", 10000, 100);
+                combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Ad Min", 10000, 100);
             }
 
             // Player talking to a npc example:
@@ -597,7 +703,6 @@ public class TheSlums {
     //This section just sets the background for why they end up in the slums of Keji
 
         clearConsole(0);
-        System.out.println(colour("ACT 1:", "CYAN"));
 
         // Loading message to catch player's attention
         String[] loadingMsg = { 
@@ -624,8 +729,50 @@ public class TheSlums {
         clearConsole(1000);
 
         // Sets a custom start and location based on player's choice of job
-        if (background.equals("Sushi")) {
-            System.out.println(colour("DEBUG{SUSHI CHEF START}", "CYAN"));
+        if (background.equals("Sushi")) { // Sushi background by Jennifer
+            // Sushi background by Jennifer
+            slowTxt(
+            "The slums buzz with their usual chaos: street vendors hawking questionable goods, children weaving through the shadows,\n" +
+            "and the air thick with the greasy tang of desperation. Amid the commotion, a sushi chef walks in, cutting a striking figure\n" +
+            "in his crisp white uniform, neatly tied apron, and a polished knife kit slung over his shoulder. He makes his way to a\n" +
+            "run-down fish stall, where an elderly vendor methodically cleans a bucket of dubious-looking fish. Nearby, a young bystander\n" +
+            "lingers, watching the scene unfold with a mix of curiosity and suspicion.\n", 100);
+
+            isSpeaking("Sushi Chef", "(Bowing slightly) Good evening. I hear you're the one to talk to for fresh fish?\n");
+
+            isSpeaking("Fish vendor", "(Frowning, then laughing hoarsely) Fresh? Hah! You've got the wrong neighborhood for that, my friend. What I've got is cheap. Are you sure that's what you're after, chef?\n");
+
+            isSpeaking("Sushi chef", "Cheap works. I'm not after flavor or quality—just something to practice with.\n");
+
+            isSpeaking("Fish vendor", "(Leaning forward, curious)  Practice? With this? You'd get better results slicing up cardboard.\n");
+
+            isSpeaking("Sushi chef", "(With a faint smile) Cardboard doesn't have bones, scales, or the delicate texture of real flesh. Even flawed fish has its lessons to offer.\n");
+
+            isSpeaking("Fish vendor", "(Chucking) Lessons, you say? Alright, I like your style. So, what's your offer?\n");
+
+            isSpeaking("Sushi chef", "(Takes out some cash(or whatever currency) Enough for what you'd call a \"lesson.\" I'll take whatever you've got left at the end of the day.\n");
+
+            slowTxt("\nAs the exchange continues, the young bystander inches closer, casting a wary eye on the chef.\n\n", 100);
+
+            isSpeaking("Bystander", "(Snapping) Why're you really here? We've seen your type before. You come down from the fancy districts to take what's cheap, leave us with nothing.");
+
+            isSpeaking("Sushi chef", "I'm here because I respect the craft. Every piece of fish, no matter its source, has something to offer. But don't worry—the fish you're serving is safe. What I'm taking? It's not fit for anyone's palette.\n");
+
+            isSpeaking("Bystander", "(Frowning) So, what? You're doing us a favor?\n");
+
+            isSpeaking("Sushi chef", "(Pausing, choosing words carefully) It's not a favor—it's a trade. I get to sharpen my skills on what others would throw away, and the vendor gets paid for what would otherwise go to waste. Tell me, doesn't that sound fair?\n");
+
+            isSpeaking("Bystander", "(Still suspicious) Maybe. But what if someone here needs that fish? Even bad fish is better than going hungry.\n");
+
+            isSpeaking("Fish vendor", "(Snorting) Kid, do you have any idea what this fish would do to someone if they ate it raw? The chef's got a point—it's safer in his hands than on our plates.\n");
+
+            isSpeaking("Sushi chef", "(Turning back to vendor) Thanks. I'll see you around once I've honed my skills with it.\n");
+
+            isSpeaking("Fish vendor", "(Nodding as he hands over a bag of fish) Alright, chef, it's yours. But here's the deal—next time, bring some of that fancy sushi you're perfecting. Let the people here get a taste of the good life, even if just for a moment.\n");
+
+            slowTxt("\nThe chef gathers the fish and strides away, eager to refine his craft and sharpen his skills.\n", 100);
+
+            // Sushi background by Jennifer
         } else if (background.equals("Steel")) { // Steel background by Rigo
             // Steel background by Rigo
             slowTxt(cName + " is a steel factory worker.\n\n\n", 100);
@@ -1042,8 +1189,169 @@ public class TheSlums {
             }
 
             // Steel background written by Rigo
-        } else if (background.equals("Farmer")) {
-            System.out.println(colour("DEBUG{FARMER START}", "CYAN"));
+        } else if (background.equals("Farmer")) { // Farmer background by Roberto
+            // Farmer background by Roberto
+
+            System.out.println(cName + " travels to the slums seeking new customers and better trade than they're used to in the villages surrounding the farm.\n" +
+                "Upon arrival in the slums, " + cName + " finds the perfect spot in a dank, square plaza. It was still early, but there was potential for increased foot traffic later in the day.\n" +
+                "The slums are dirty, and the smells are putrid. Though it looks like a horrid place for business, there were enough people to appreciate the low prices and C-tier vegetables you brought.\n\n");
+
+            slowTxt("A few hours pass...\n\n", 130);
+             
+            isSpeaking (cName, "Get yer fresh veggies, straight from the dirt!!\n");
+            isSpeaking (cName, "Ain't no better deals for miles 'round these parts!\n\n");
+            
+            // *skill check minigame influences good sales or not
+            // 3 rounds, if all three are passed, +200 money
+            // Else, +100 money
+            clearConsole(300);
+            slowTxt("...\n\n", 300);
+            isSpeaking(cName, "Yikes... sales here're worse than any town I've ever been to.\n\n");
+            
+            slowTxt("You heard stories of farmers coming to the slums and getting enough to sustain themselves for at least the week.\n\n", 100);
+            
+            slowTxt("The people whisper about the latest to fall ill to an unknown virus."
+            + "You'd better pay special attention to cleanliness today.\n\n"
+            , 100);
+
+            clearConsole(300);
+            slowTxt("You also notice a man draped from head to toe... asking for all of the attention and no attention at the same time.\n", 100);
+            
+            isSpeaking ("Stranger", "...\n");
+            System.out.println("\n1. Suspicious\n2. Dismissive\n");
+
+            switch (playerSelection()) {
+                case"1":
+                    clearConsole(300);
+                    isSpeaking (cName, "Who're you, and what're you doin' skulkin' 'round here?\n");
+                    isSpeaking("Stranger", "*chuckles* Good instincts, farmer. You should take it easy... You're not from here are you? How 'bout I show you around?\n");
+                    //(No change in reputation)
+                    break;
+                default: 
+                    isSpeaking(cName, "I ain't in the mood to be dealin' with ya right now.\n");
+                    isSpeaking("Stranger", "Well whether you like it or not, " +
+                        "you're not from here, and you're struggling. You're " +
+                        "going to need my help.\n");
+                    //(Maybe this choice could piss the stranger off like larry)
+            }
+
+            isSpeaking (cName, "*You finish packing your cart* You're right. I ain't from 'round here, but I don't need your help.\n");
+            isSpeaking ("Stranger", "You hardly have enough money to last yourself the week. The people have no money. You'd better get used to that.\n");
+            isSpeaking(cName, "*Curiously* Me? Get used to this? Why? What's goin' on here? This place sure ain't like the stories I heard.\n");
+            isSpeaking ("Stranger", "Well, I'd tell you... if you let me hitch a ride with you!\n");
+            isSpeaking (cName, "I don't know about you, but I'm heading back home.\n");
+            isSpeaking ("Stranger", "Take me with you!\n");
+            isSpeaking (cName, "You don't even know where I'm going!\n");
+            isSpeaking ("Stranger", "Well, about anywhere is better than this dump. Besides, I've been hearing some talk around town. Something nasty's\n"
+            + "brewing. I'd hate to be here when it boils over...\n");
+            isSpeaking (cName, "I think that's the least of my concerns. Plus, I don't know you, and you don't know me. Why should I trust the likes of you?\n");
+            isSpeaking ("Stranger", "C'mon, don't make me beg farmer, get me outta here!\n");
+
+            System.out.println("\n1. Accept\n2. Decline\n");
+            
+            if (playerSelection().equals("1")) {
+                clearConsole(300);
+                isSpeaking (cName, "What the hell, why not...\n\n");
+                slowTxt("The stranger jumps on your cart and you ride back to town.\n\n", 100);
+                slowTxt("You notice a cloud of dust rapidly approaching your cart. The stranger seems to have noticed as well.\n\n", 100);
+                isSpeaking (cName, "We should be arriving soon. What's your plan now?\n");
+                isSpeaking ("Stranger", "Mind your business, farmer, it'll do you well! And here, thanks for the ride.\n\n");
+
+                slowTxt("The stranger hands " + cName + " a small bag.\n", 100);
+                stats[5] += 200;
+                isSpeaking (cName, "I'll keep that in mind, partner\n");
+                slowTxt("As you ride back, you notice the stranger looking over his shoulder. He's running from something... but you mind your business...\n", 100);
+                slowTxt("Before you know it, the cloud encapsulates your cart. A shadow springs into the air, eclipsing the sun as " + "it lunges at you with a club.\n", 100);
+                slowTxt("You brace yourself grabbing your trusty " + cWeapon + " to defend yourself!\n", 100);
+                //(combat stage, kara wins)
+
+                String[] shdwBxrs = {"C. Loud!", "Dosidos", "Smog"};
+                int[] bxrHealth = {75, 22, 50};
+                int[] bxrDmg = {10, 22, 15};
+
+                clearConsole(500);
+                slowTxt(cName + " got jumped by a vape cloud!\n", 10);
+                combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, shdwBxrs, bxrHealth, bxrDmg, "Stranger", 150, 30);
+
+                isSpeaking ("Stranger", "I thought you were done for there, mate! Nice holding your ground!");
+
+                slowTxt("\n\nUnfortunately...", 120);
+                clearConsole(500);
+
+                slowTxt("The pair get stopped at a checkpoint!\n\n", 100);
+
+                isSpeaking("Stranger", "Looks like this is where we split " + cName + " thanks for getting me this far.\n");
+                slowTxt("\nThe stranger hopped out of the cart before the police had a chance to spot him.\n", 100);
+                clearConsole(200);
+            } else {
+                slowTxt("\n\nThe farmer flipped off the stranger and walked away...\n", 100);
+                clearConsole(200);
+                slowTxt("Unfortunately...", 120);
+
+                clearConsole(500);
+
+                slowTxt(cName + " was stopped at a checkpoint!\n\n", 100);
+            }
+
+            // I didn't have enough time to add the rest
+            /* 
+
+            Choice 2 (decline):
+                    isSpeaking (cName, "No thank you. Now, if you'll excuse me, I have
+            + places to be.)
+                    System.out.print ("You jump on your cart and head back home without
+            + looking back.")
+                    System.out.print ("You can't help but feel a little remorse for the guy... 
+                    (Also pisses the stranger off)
+            
+                    System.out.print ("On your way home you can't help but notice strange"
+                                + "noises coming from the back of your cart."
+                    System.out.print ("You stop your cart to investigate only to see a shadow"
+                                + "dart out of your cart")
+                    isSpeaking (cName, "Didn't I say I wasn't going to involve myself with"
+                                + "whatever it is you're running from?")
+                    System.out.print ("The stranger lunges at you with a frozen salmon off" 
+                                + "your cart.")
+                    (Maybe an easy combat stage where kara always wins)
+                    
+                    isSpeaking ("Stranger", "PLEASE! Spare me! Don't you have a heart?")
+                    isSpeaking ("Stranger", "Please! Just take me to town, and I swear you'll"
+                                + "NEVER hear from me again!")
+            Choice 1 (decline only to piss stranger off)
+                    (Pisses stranger off)
+                    isSpeaking ("Stranger", "Fuck you, man.. I'll die out here!")
+            -
+            isSpeaking (cName, "Fine. I don't trust you... but I can't leave you in the"
+            + "middle of nowhere! I'm not heartless, either. Get"
+            + "in.")
+                    
+            System.out.print ("You see your farm on the horizon as you approach
+            + town. You don't know when, but the stranger
+            + jumped out without saying a word.")
+            
+            System.out.print ("You arrive home, unpack, unwind, and go to sleep.")
+            
+            System.out.print ("The muffled floorboards squeak outside your front
+            + door")
+            
+            System.out.print("*A few hours later...*")
+            System.out.print ("You wake up to warm sun rays gleaming on your face and a gentle"
+            + "breeze as a butterfly flutters by your face... wait, what?")
+            System.out.print ("You jump out of bed to find the front door wide open, house key still " 
+            + "dangling in the knob, and all of your valuables missing!")
+            (Stranger steals some of your money, too if you pissed him off or something)
+            
+            System.out.print ("No doubt, the stranger was responsible for this.")
+            
+            System.out.print("You storm back to the slums, determined to find answers. But as you"
+            + "approach, you see guards setting up barricades around some
+                + entrances.")
+            System.out.print ("The hair along your spine stands pin straight as you enter the city.")
+            System.out.print("The streets beyond are eerily empty. The only sound is the rustle of
+            + paper as a warning notice flutters in the wind...")
+            */
+
+            // Farmer background by Roberto
         } else if (background.equals("Dealer")) { // Dealer background written by Rigo
             // Dealer background written by Rigo
             shoottasRep = 1;
@@ -1427,7 +1735,18 @@ public class TheSlums {
             // Unemployed background written by Kanishq
         }
 
+        clearConsole(2000);
+        slowTxt(
+            "An outbreak of a new virus started because stabbas were stabbing people with bloody knives and infecting people.\n"
+            + cName + " was stopped at a police checkpoint where they are testing for Akaiha-01, the Crimson Plague...\n"
+            + "\nThey were quarantined but were released early because the hospital was full.\n"
+            + "\nNow " + cName + " is stuck inside the slums until they can talk to the right people, sneak out, or brute force their way back to the city."
+        , 100);
+        clearConsole(2000);
+
         Boolean inSlums = true;
+        questComplete[0] = false;
+        questComplete[9] = false;
 
         // __________________________________________________ Slums/Act 1 While Loop __________________________________________________
 
@@ -1453,7 +1772,7 @@ public class TheSlums {
             pause(100);
 
             slowTxt(
-                  "1. {Story Location}\n"
+                  "1. Checkpoint to Downtown Keji\n"
                 + "2. Black Market (Shops)\n"
                 + "3. Glorbo's Garbage (Shop)\n"
                 + "4. Stabbas Territory (Rep: "+stabbasRep+")\n"
@@ -1466,7 +1785,7 @@ public class TheSlums {
             // Sets the character's location
             System.out.println("");
             if (response.equals("1")) {
-                location = "";
+                location = "checkpoint";
                 System.out.println(cName + " is heading to " + location);
             } else if (response.equals("2")) {
                 location = "The Factory";
@@ -1489,11 +1808,141 @@ public class TheSlums {
             }
 
 
-
             // __________________________________________________ Slums Locations __________________________________________________
 
-            if (location.equals("")) { // __________________________________________________ {Story Location}
+            if (location.equals("checkpoint")) { // __________________________________________________ {Story Location}
+                slowTxt(
+                    "\n"+cName+" is now in the slums and in quarantine because of the new virus Akaiha-01.\n" + 
+                    "But "+cName+" absolutely has to get out because the streets will be full of chaos. However,\n" +
+                    cName+" does not yet know exactly how to get out...\n\n" +
+                    "Days go by and "+cName+" still has no clear plan on how to deal with this situation.\n\n" +
+                    "Although "+cName+" is officially in quarantine, they can now can move freely throughout the slum.\n" +
+                    "This is because the police are too disgusted by the conditions in the slums and do not dare to enter.\n" + 
+                    "The entire area has therefore been quarantined without the authorities themselves being present.\n\n" +
+                    "These circumstances give "+cName+" the opportunity to look for loopholes to try to escape the quarantine.\n" +
+                    "After all, "+cName+" would never be found in such an environment under normal circumstances.\n",
+                15);
 
+                if (skills[3] >= 20) {
+                    slowTxt("Maybe " + cName + " can sneak out through a less guarded area.\n", 100);
+
+                    System.out.println("\n1. Try to sneak out. ["+skills[3]+"/60]\n2. Think of something else.\n");
+
+                    if (playerSelection().equals("1")) {
+                        if (skills[3] >= 60) {
+                            slowTxt(cName + " was able to crawl under a part of the fence during the night...", 150);
+
+                            inSlums = false;
+                            continue;
+                        } else {
+                            slowTxt(cName + " got caught by a guard!\n\n", 50);
+
+                            if(combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Guard", 130, 30)) {
+                                govRep -= 1;
+                            } else {
+                                slowTxt("\n" + cName + " went to jail!", 100);
+                                stats[2] -= 1;
+                                clearConsole(500);
+                                slowTxt("\n" + cName + " was stabbed in jail and was released early.", 100);
+                                infected = true;
+                            }
+                        }
+                    }
+                } else {
+                    slowTxt(cName + " is not stealthy enough to pull off a breakout...\n", 100);
+                }
+
+                if (skills[1] >= 20) {
+                    slowTxt("Maybe " + cName + " can convince a guard to let them through.\n", 100);
+
+                    System.out.println("\n1. Convince a guard. ["+skills[1]+"/40]\n2. Think of something else.\n");
+
+                    if (playerSelection().equals("1")) {
+                        if (skills[1] >= 60) {
+                            if (skills[1] >= 90) {
+                                clearConsole(500);
+                                talkingCats(L_OPEN, Fed);
+                                isSpeaking(colour(cName, "Green"), "Let me through!");
+
+                                clearConsole(500);
+                                talkingCats(L_CLOSED, Fed);
+                                isSpeaking(colour("Guard", "blue"), "Ohh ok.");
+
+                                clearConsole(500);
+                                slowTxt("That worked somehow!", 100);
+
+                                inSlums = false;
+                                continue;
+                            } else {
+                                clearConsole(500);
+                                talkingCats(L_OPEN, Fed);
+                                isSpeaking(colour(cName, "Green"), "Can I leave... Please. Ill do "+colour("anything", "purple")+"!");
+
+                                clearConsole(500);
+                                talkingCats(BLUSH, Fed);
+                                isSpeaking(colour("Guard", "purple"), "Anything?");
+
+                                clearConsole(500);
+                                talkingCats(SLEEP, Fed);
+                                isSpeaking(colour("Guard", "purple"), "I want a tuna sandwich, and a NipCig MK4.");
+
+                                if (questComplete[0] && questComplete[9]) {
+                                    clearConsole(500);
+                                    talkingCats(SMOL, Fed);
+                                    isSpeaking(colour(cName, "Green"), "I did say anything...");
+
+                                    slowTxt("The Guard let " + cName + " through the gate!", 100);
+                                    inSlums = false;
+                                    continue;
+                                } else {
+                                    clearConsole(500);
+                                    talkingCats(SMOL, Fed);
+                                    isSpeaking(colour(cName, "Green"), "Ohh...");
+                                }
+                            }
+                        } else {
+                            clearConsole(500);
+                            talkingCats(BLUSH, Fed);
+                            isSpeaking(colour(cName, "Green"), "Can I leave... Please.");
+
+                            clearConsole(500);
+                            talkingCats(SMOL, Fed);
+                            isSpeaking(colour("Guard", "Red"), "Nope.");
+                        }
+                    }
+                } else {
+                    slowTxt(cName + " is too anxious too talk to a guard...\n", 100);
+                }
+
+                if (skills[0] >= 30) {
+                    slowTxt("Or... " + cName + " can just fight their way through the gate...", 100);
+
+                    System.out.println("\n1. Kill\n2. Think of something else.\n");
+
+                    if (playerSelection().equals("1")) {
+                        boolean[] madeIt = {false, false, false,};
+                        String[] guards = {"Guard", "Guard", "Guard"};
+                        int[] guardHealth = {120, 120, 120};
+                        int[] guardDmg = {20, 20, 20};
+                        madeIt[0] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Corporal Tiger", 150, 30);
+                        combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, guards, guardHealth, guardDmg, "", 0, 0);
+                        madeIt[1] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Luitenant Lightweight", 200, 40);
+                        combatTwo(cName, stats, cDmgRes, skills, damageMultipliers, cDmgType, guards, guardHealth, guardDmg, "", 0, 0);
+                        madeIt[2] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Captain Bands", 300, 50);
+
+                        govRep -= 10;
+                        if (madeIt[0] && madeIt[1] && madeIt[2]) {
+                            slowTxt(cName + " killed them all...", 130);
+
+                            inSlums = false;
+                            continue;
+                        }
+                    } else {
+                        slowTxt(colour(cName, "Green" + ": I cant do that..."), 100);
+                    }
+                } else {
+                    slowTxt(cName + " is too weak to fight through the gate...", 100);
+                }
             } else if (location.equals("The Factory")) { // __________________________________________________ Black Market
                 boolean foundIt = false;
                 if (quest[2] != null && questComplete[2] == false) {
@@ -1554,7 +2003,7 @@ public class TheSlums {
                                 talkingCats(L_OPEN, R_CLOSED);
                                 isSpeaking(colour(cName, "Green"), "Im here to arrest you for your crimes!");
 
-                                questComplete[1] = combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Slasha", 200, 20);
+                                questComplete[1] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Slasha", 200, 20);
                                 if (questComplete[1]) {
                                     clearConsole(1000);
                                     slowTxt(cName + " claimed the bounty on Manathan 'Slasha' Jhonoson, The South Steel Road Slasher. (+500)", 100);
@@ -1568,7 +2017,7 @@ public class TheSlums {
                             talkingCats(L_OPEN, R_CLOSED);
                             isSpeaking(colour(cName, "Green"), "Im going to murder you legally...");
 
-                            questComplete[1] = combat(cName, stats[0], stats[1], cDamage, cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Slasha", 200, 20);
+                            questComplete[1] = combat(cName, stats[0], stats[1], stats[6], cDmgRes, cDmgType, skills, damageMultipliers, stats[4], stats, "Slasha", 200, 20);
                             if (questComplete[1]) {
                                 clearConsole(1000);
                                 slowTxt(cName + " claimed the bounty on Manathan 'Slasha' Jhonoson, The South Steel Road Slasher. (+500)", 100);
@@ -1607,6 +2056,53 @@ public class TheSlums {
                         pause(200);
                     }
                 }
+
+                slowTxt("But it is in...\n", 100);
+                // https://www.patorjk.com/software/taag/#p=display&f=Caligraphy&t=%20%20%20%20%20Stabbas%0ATerritory
+                slowTxt(
+                    "                                                                                                                   \n" + 
+                    "                        *******                           *          *                                             \n" + 
+                    "                      *       ***      *                **         **                                              \n" + 
+                    "                     *         **     **                **         **                                              \n" + 
+                    "                     **        *      **                **         **                                              \n" + 
+                    "                      ***           ********            **         **                       ****                   \n" + 
+                    "                     ** ***        ********     ****    ** ****    ** ****       ****      * **** *                \n" + 
+                    "                      *** ***         **       * ***  * *** ***  * *** ***  *   * ***  *  **  ****                 \n" + 
+                    "                        *** ***       **      *   ****  **   ****  **   ****   *   ****  ****                      \n" + 
+                    "                          *** ***     **     **    **   **    **   **    **   **    **     ***                     \n" + 
+                    "                            ** ***    **     **    **   **    **   **    **   **    **       ***                   \n" + 
+                    "                             ** **    **     **    **   **    **   **    **   **    **         ***                 \n" + 
+                    "                              * *     **     **    **   **    **   **    **   **    **    ****  **                 \n" + 
+                    "                    ***        *      **     **    **   **    **   **    **   **    **   * **** *                  \n" + 
+                    "                   *  *********        **     ***** **   *****      *****      ***** **     ****                   \n" + 
+                    "                  *     *****                  ***   **   ***        ***        ***   **                           \n" + 
+                    "                  *                                                                                                \n" + 
+                    "                   **                                                                                              \n" + 
+                    "     ****           *                                                                                              \n" + 
+                    "    *  *************                                        *         *                                            \n" + 
+                    "   *     *********                                         ***       **                                            \n" + 
+                    "   *     *  *                                               *        **                                            \n" + 
+                    "    **  *  **                   ***  ****    ***  ****             ********    ****    ***  ****    **   ****      \n" + 
+                    "       *  ***            ***     **** **** *  **** **** * ***     ********    * ***  *  **** **** *  **    ***  *  \n" + 
+                    "      **   **           * ***     **   ****    **   ****   ***       **      *   ****    **   ****   **     ****   \n" + 
+                    "      **   **          *   ***    **           **           **       **     **    **     **          **      **    \n" + 
+                    "      **   **         **    ***   **           **           **       **     **    **     **          **      **    \n" + 
+                    "      **   **         ********    **           **           **       **     **    **     **          **      **    \n" + 
+                    "       **  **         *******     **           **           **       **     **    **     **          **      **    \n" + 
+                    "        ** *      *   **          **           **           **       **     **    **     **          **      **    \n" + 
+                    "         ***     *    ****    *   ***          ***          **       **      ******      ***          *********    \n" + 
+                    "          *******      *******     ***          ***         *** *     **      ****        ***           **** ***   \n" + 
+                    "            ***         *****                                ***                                              ***  \n" +
+                    "                                                                                                       *****   *** \n" +
+                    "                                                                                                     ********  **  \n" +
+                    "                                                                                                    *      ****    \n" +
+                    "                                                                                                                   \n" +
+                    "\n"
+                , 1);
+
+                slowTxt("\n" + cName + "'s Stabbas Reputation: " + stabbasRep + "\n", 100);
+
+
             } else if (location.equals("Greysand Avenue")) { // __________________________________________________ Faction 2 Area
                 if (quest[3] != null && questComplete[3] == false) {
                     slowTxt(cName + " delivered the parcel! (+300)", 100);
@@ -1621,9 +2117,8 @@ public class TheSlums {
 
                 do {
                     System.out.println("\n1. Buy a drink\n2. Look at the job board\n3. Leave tavern\n");
-                    response = playerSelection();
 
-                    if (response.equals("1")) {
+                    if (playerSelection().equals("1")) {
                         String[] drinkMenu = {
                             "Booz's Brew",
                             "'Tequila'",
@@ -1634,7 +2129,7 @@ public class TheSlums {
                         drinkMenu[4] = (orbs)? "Orb of Liquid": "Juice";
                         int[] drinksCost = {3,4,5,2,3};
 
-                        String[] drinksBought = shopping(true, cName, "Booz", stats, drinkMenu, drinksCost);
+                        String[] drinksBought = shopping(cName, stats, "Booz", drinkMenu, drinksCost);
 
                         clearConsole(500);
                         slowTxt(colour("\nMoney", "Yellow") + ": " + stats[5] + "\n\n", 100);
@@ -1773,7 +2268,6 @@ public class TheSlums {
 
                                 if (playerSelection().equals("1")) {
                                     quest[1] = "Kill the South-Steel Slasha";
-                                    quests++;
                                     questComplete[1] = false;
                                     slowTxt(colour("\nBooz", "Yellow") + ": 'Slasha' is some gangster from Steel Rd. that pissed off the wrong guy ig.\n", 100);
                                 } else{
@@ -1792,10 +2286,8 @@ public class TheSlums {
                                 , 50);
                                 System.out.println("\n1. Accept the job\n2. Leave job on the board\n");
 
-                                response = playerSelection();
                                 if (playerSelection().equals("1")) {
                                     quest[2] = "Find the What?";
-                                    quests++;
                                     questComplete[2] = false;
                                     slowTxt(colour("Booz", "Yellow") + ": Some guy is looking for his doohickey that he lost at the factory.\n", 100);
                                 } else{
@@ -1814,10 +2306,8 @@ public class TheSlums {
                                 , 50);
                                 System.out.println("\n1. Accept the job\n2. Leave job on the board\n");
 
-                                response = playerSelection();
                                 if (playerSelection().equals("1")) {
                                     quest[3] = "Same Decade Delivery";
-                                    quests++;
                                     questComplete[3] = false;
                                     slowTxt(colour("\nBooz", "Yellow") + ": Take this parcel to this address.\n", 100);
                                     slowTxt("\nBooz hands " + cName + " a paper with 'To: 130 W Greysand Ave' written on it.\n", 100);
@@ -1948,6 +2438,8 @@ public static void isSpeaking(String name, String text) {
         System.out.print(text.charAt(i));
         pause(68);
     }
+
+    clearConsole(500);
 }
 
 public static void talkingCats(String[] face1, String[] face2) {
@@ -2251,11 +2743,12 @@ public static int dice(String cName, int kMoneyIn, String eName, int eMoney) {
 }
 
 // Shop method
-public static String[] shopping(boolean inShop, String cName, String mName, int[] stats, String[] items, int[] cost) {
+public static String[] shopping(String cName, int[] stats, String mName, String[] items, int[] cost) {
     slowTxt("\n" + cName + " is trying to barter with " + mName + "...\n", 100);
     clearConsole(500);
     String[] itemsBought = new String[10];
     int howMany = 0;
+    boolean inShop = true;
     while (inShop) {
         System.out.println("\n" + cName + "'s money: " + stats[5]);
         System.out.print("Items Bought: ");
@@ -2334,13 +2827,6 @@ public static String[] shopping(boolean inShop, String cName, String mName, int[
 
 // __________________________________________________  Turn Based Combat System  __________________________________________________
 
-/*
-* New combat system is heavily dulited compared to Nordverden but still functions as a turn based combat system
-* All methods were hand written by Rigo using pieces of Nordverden's TBCS
-* Only able to fight 1 enemy at a time with this system
-* Leveling up also need to be done manually and there is no level curve
-*/
-
 // Method that starts and ends combat also sets lives if the player died
 public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDamage, double cDmgRes, String cDmgType, int[] skills, double[] damageMultipliers, int luck, int[] stats, String eName, int eHealth, int eDamage) {
     clearConsole(5000);
@@ -2353,9 +2839,9 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
     boolean inCombat = true;
     double dmgMult = 0.0;
     int damage = 0;
-    int kHitChance = 0;
+    int cHitChance = 0;
     int escapeChance = 0;
-    boolean coward = true;
+    boolean wonCom = false;
 
     int enemyDamage = 0;
     int eHitChance = 0;
@@ -2403,13 +2889,13 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
         switch (playerSelection()) {
             case "1": // If player decides to fight...
                 for (int i = 0; i < turns; i++) { // number of attacks determined by stamina
-                    kHitChance = rand.nextInt(20) + 1 + luck; // "20 sided die" determines if character's attack hit
+                    cHitChance = rand.nextInt(20) + 1 + luck; // "20 sided die" determines if character's attack hit
  
-                    if (kHitChance >= 20) { // character does double damage if a 20 or higher is rolled
+                    if (cHitChance >= 20) { // character does double damage if a 20 or higher is rolled
                         System.out.println(GREEN + "*CRITICAL HIT*");
                         eHealth -= damage*2;
                         System.out.println(cName + RESET + " hit " + eName + " and did " + damage*2 + " damage!\n");
-                    } else if (kHitChance >= 10) { // removes health from enemy (ammount is based on damage)
+                    } else if (cHitChance >= 10) { // removes health from enemy (ammount is based on damage)
                         eHealth -= damage;
                         System.out.println(GREEN + cName + RESET + " hit " + eName + " and did " + damage + " damage!\n");
                     } else { // If the dice rolls less than 10 the attack misses
@@ -2424,7 +2910,7 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
                 // Ends combat if enemy's health drops to 0
                 if (eHealth <= 0) {
                     System.out.println(GREEN + cName + RESET + " defeated " + RED + eName + RESET + "!\n");
-                    coward = false;
+                    wonCom = true;
                     inCombat = false;
                     continue;
                 }
@@ -2489,12 +2975,26 @@ public static boolean combat(String cName, int cHealth, int cMaxHealth, int cDam
         }
     }
 
-    return !coward;
+    stats[2] = levelUp(cName, stats[2]);
+    stats[1] += 10;
+    stats[0] = stats[1];
+    skills = increaseSkills(cName, skills);
+    damageMultipliers = increaseDamage(cName, damageMultipliers);
+    
+    if (wonCom) {
+        stats[2] = levelUp(cName, stats[2]);
+        stats[1] += 10;
+        stats[0] = stats[1];
+        skills = increaseSkills(cName, skills);
+        damageMultipliers = increaseDamage(cName, damageMultipliers);
+    }
+
+    return wonCom;
 }
 
 // Method that starts and ends combat also sets lives if the player died
-public static int combatTwo(String cName, int cHealth, int cMaxHealth, int cDamage, double cDmgRes, String cDmgType, int[] skills, double[] damageMultipliers, int luck, int lives, String[] eName, int[] eHealth, int[] eDamage, String aName, int aHealth, int aDamage) {
-    clearConsole(5000);
+public static void combatTwo(String cName, int[] stats, double cDmgRes, int[] skills, double[] damageMultipliers, String cDmgType, String[] eName, int[] eHealth, int[] eDamage, String aName, int aHealth, int aDamage) {
+    clearConsole(1000);
     // Color Variables
     final String RESET = "\u001B[0m"; // Resets color (needed after every change)
     final String ENEMY = "\u001B[31m"; // Reserved for Enemies
@@ -2505,7 +3005,7 @@ public static int combatTwo(String cName, int cHealth, int cMaxHealth, int cDama
     boolean fighting = false;
     double dmgMult = 0.0;
     int damage = 0;
-    int kHitChance = 0;
+    int cHitChance = 0;
     int escapeChance = 0;
 
     int enemyDamage = 0;
@@ -2537,38 +3037,41 @@ public static int combatTwo(String cName, int cHealth, int cMaxHealth, int cDama
     }
 
     // Damage equation (takes damage, multiplies it by the damage multiplier, then adds bonus for strength)
-    damage = (int)((cDamage*dmgMult) + (skills[0]/10));
+    damage = (int)((stats[6]*dmgMult) + (skills[0]/10));
 
     // Keeps going until character kills the enemy or runs away (both count as a win tho)
     while (inCombat) {
-        clearConsole(2000);
-        int cSel = 0;
+        clearConsole(1000);
         fighting = false;
-        // Displays character and the enemy's health
-        System.out.println(colour(cName, ALLY) + "'s health: " + cHealth + "/" + cMaxHealth);
-        System.out.println(colour(aName, ALLY) + "'s health: " + aHealth);
-        System.out.println(colour(eName[0], ENEMY) + "'s health: " + eHealth[0]);
-        System.out.println(colour(eName[1], ENEMY) + "'s health: " + eHealth[1]);
-        System.out.println(colour(eName[2], ENEMY) + "'s health: " + eHealth[2]);
-
+        // Displays character, ally and the enemy's health
+        if (aName != null && !aName.equals(""))
+            slowTxt(colour(aName, ALLY) + "'s health: " + aHealth + "\n", 10);
+        slowTxt(
+        colour(cName, ALLY) + "'s health: " + stats[0] + "/" + stats[1] + "\n\n" +
+        colour(eName[0], ENEMY) + "'s health: " + eHealth[0] + "\n" +
+        colour(eName[1], ENEMY) + "'s health: " + eHealth[1] + "\n" +
+        colour(eName[2], ENEMY) + "'s health: " + eHealth[2] + "\n"
+        , 10);
 
         // __________________________________________________ Player's Turn __________________________________________________
 
         // Give the player the choice to attack or run away
-        System.out.println("\n1. "+eName[0]+"\n2. "+eName[1]+"\n3. "+eName[2]+"\n 4. Flee");
+        System.out.println("\n1. Attack "+eName[0]+"\n2. Attack "+eName[1]+"\n3. Attack "+eName[2]+"\n4. Run Away\n");
+        int cTarget = 0;
 
         switch (playerSelection()) {
-            case "3": cSel++;
-            case "2": cSel++;
+            case "3": cTarget++;
+            case "2": cTarget++;
             case "1": fighting = true; break;
             case "4": // If the player tries to run
                 escapeChance = rand.nextInt(100) + 1;
-                if (escapeChance < (skills[3] + luck*10)) { // Ends combat if character's sneak skill is higher than the escape chance (0-100 roll)
-                    System.out.println(cName + " got away safely!\n");
+                if (escapeChance < (skills[3] + stats[4]*10)) { // Ends combat if character's sneak skill is higher than the escape chance (0-100 roll)
+                    clearConsole(1);
+                    slowTxt(cName + " got away safely!\n\n", 100);
                     inCombat = false;
                     continue;
                 } else { // Continues fight if escape chance was too high or if sneak is too low
-                    System.out.println(cName + " was not able to get away...\n");
+                    slowTxt(cName + " was not able to get away...\n", 100);
                 }
                 break;
             default: continue;
@@ -2577,54 +3080,56 @@ public static int combatTwo(String cName, int cHealth, int cMaxHealth, int cDama
             // __________________________________________________ if they attacked an enemy __________________________________________________
             if (fighting) {
                 for (int i = 0; i < turns; i++) { // number of attacks determined by stamina
-                    kHitChance = rand.nextInt(20) + 1 + luck; // "20 sided die" determines if character's attack hit
+                    cHitChance = rand.nextInt(20) + 1 + stats[4]; // "20 sided die" determines if character's attack hit
 
-                    if (kHitChance >= 20) { // character does double damage if a 20 or higher is rolled
-                        System.out.println(ALLY + "*CRITICAL HIT*");
-                        eHealth[cSel] -= damage*2;
-                        System.out.println(cName + RESET + " hit " + eName[cSel] + " and did " + damage*2 + " damage!\n");
-                    } else if (kHitChance >= 10) { // removes health from enemy (ammount is based on damage)
-                        eHealth[cSel] -= damage;
-                        System.out.println(ALLY + cName + RESET + " hit " + eName[cSel] + " and did " + damage + " damage!\n");
+                    if (cHitChance >= 20) { // character does double damage if a 20 or higher is rolled
+                        slowTxt(ALLY + "\n*CRITICAL HIT*\n", 10);
+                        eHealth[cTarget] -= damage*2;
+                        slowTxt(cName + RESET + " hit " + eName[cTarget] + " and did " + damage*2 + " damage!\n", 100);
+                    } else if (cHitChance >= 10) { // removes health from enemy (ammount is based on damage)
+                        eHealth[cTarget] -= damage;
+                        slowTxt("\n" + ALLY + cName + RESET + " hit " + eName[cTarget] + " and did " + damage + " damage!\n", 100);
                     } else { // If the dice rolls less than 10 the attack misses
-                        System.out.println(ALLY + cName + " missed!\n" + RESET);
+                        slowTxt("\n" + ALLY + cName + " missed!\n" + RESET, 100);
                     }
 
                     // breaks loop if enemy dies before turn ends
-                    if (eHealth[cSel] <= 0)
+                    if (eHealth[cTarget] <= 0)
                         break;
                 }            
             }
 
-        pause(300);
+            if (eHealth[0] <= 0 && eHealth[1] <= 0 && eHealth[2] <= 0) {
+                slowTxt(ALLY + cName + RESET + " defeated everyone!\n", 100);
+                pause(300);
+                inCombat = false;
+                continue;
+            }
+        pause(100);
 
         // __________________________________________________ Ally turn __________________________________________________
-        if (!(aName.equals(""))) {
+        if (aName != null && !aName.equals("") ) {
             int aHitChance;
             int aTarget;
+            boolean targetSet = false;
 
             aHitChance = rand.nextInt(20) + 1;
-
+            
             do {
                 aTarget = rand.nextInt(3);
-
-                if (eHealth[0] <= 0 && eHealth[1] <= 0 && eHealth[2] <= 0) {
-                    System.out.println(ALLY + cName + RESET + " defeated everyone!\n");
-                    pause(300);
-                    inCombat = false;
-                    continue;
-                }
-            } while (!(eHealth[aTarget] <= 0));
+                if (eHealth[aTarget] > 0)
+                    targetSet = true;
+            } while (!targetSet);
 
             if (aHitChance >= 20) { // character does double damage if a 20 or higher is rolled
-                System.out.println(ALLY + "*CRITICAL HIT*");
+                slowTxt(ALLY + "*CRITICAL HIT*\n", 10);
                 eHealth[aTarget] -= aDamage*2;
-                System.out.println(aName + RESET + " hit " + eName[aTarget] + " and did " + aDamage*2 + " damage!\n");
-            } else if (aHitChance >= 8) { // removes health from enemy (ammount is based on damage)
+                slowTxt(aName + RESET + " hit " + eName[aTarget] + " and did " + aDamage*2 + " damage!\n", 50);
+            } else if (aHitChance >= 10) { // removes health from enemy (ammount is based on damage)
                 eHealth[aTarget] -= aDamage;
-                System.out.println(ALLY + aName + RESET + " hit " + eName[aTarget] + " and did " + aDamage + " damage!\n");
+                slowTxt(ALLY + aName + RESET + " hit " + eName[aTarget] + " and did " + aDamage + " damage!\n", 50);
             } else { // If the dice rolls less than 8 the attack misses
-                System.out.println(ALLY + aName + " missed!\n" + RESET);
+                slowTxt(ALLY + aName + " missed!\n" + RESET, 50);
             }
         }
 
@@ -2632,7 +3137,7 @@ public static int combatTwo(String cName, int cHealth, int cMaxHealth, int cDama
 
         // Ends combat if enemy's health drops to 0
         if (eHealth[0] <= 0 && eHealth[1] <= 0 && eHealth[2] <= 0) {
-            System.out.println(ALLY + cName + RESET + " defeated everyone!\n");
+            slowTxt(ALLY + aName + RESET + " defeated everyone!\n", 100);
             pause(300);
             inCombat = false;
             continue;
@@ -2641,52 +3146,81 @@ public static int combatTwo(String cName, int cHealth, int cMaxHealth, int cDama
         // __________________________________________________ Enemy's Turn __________________________________________________
 
         for (int i = 0; i < 3; i++) {
-            slowTxt(colour("\n\n" + eName[i], ENEMY) + " is attacking!\n\n", 75);
-            clearConsole(2000);
+            if (eHealth[i] <= 0)
+                continue;
             // "20 sided die" determines if the enemy's attack hits
             eHitChance = rand.nextInt(20) + 1; 
             eHitChance = (ranged)? eHitChance - 2: eHitChance;
+            boolean eTarget = (rand.nextInt(10) > 5); // 50/50 chance to target player or ally (True = player, False = ally)
 
-            // Enemy only gets one attack per turn but combat doesn't end unless enemy dies or character runs
-            if (eHealth[i] > 0 && eHitChance >= 10) { // If enemy is alive and their attack hit...
-                enemyDamage = (eHitChance == 20)? (int)((eDamage[i]*2)/cDmgRes) : (int)(eDamage[i] / cDmgRes);
+            if (eTarget) {
+                slowTxt("\n" + eName[i] + " is attacking " + cName + "\n", 20);
+                // Enemy only gets one attack per turn but combat doesn't end unless enemy dies or character runs
+                if (eHealth[i] > 0 && eHitChance >= 10) { // If enemy is alive and their attack hit...
+                    enemyDamage = (eHitChance == 20)? (int)((eDamage[i]*2)/cDmgRes) : (int)(eDamage[i] / cDmgRes);
 
-                if (eHitChance >= 18) { // Ctritical hit chance is lower for enemy so that ranged weapons are too powerful (they still might be)
-                    System.out.println(ENEMY + eName[i] + " got a critical hit!");
-                    cHealth -= enemyDamage*2;
-                    System.out.println(eName[i] + RESET + " attacked " + cName + " and did " + enemyDamage*2 + " damage!\n");
-                } else {
-                    cHealth -= enemyDamage;
-                    System.out.println(ENEMY + eName[i] + RESET + " attacked " + cName + " and did " + enemyDamage + " damage!\n");
-                }
-
-                // Removes a life if the enemy kills character
-                if (cHealth <= 0) {
-                    System.out.println("\n" + ENEMY + cName + " died!\n" + RESET);
-                    
-                    lives--;
-
-                    // If the player runs out of lives it ends the game (might be too harsh but idk. Maybe we add a way to gain lives)
-                    if (lives < 0) {
-                        System.out.println(cName + " ran out of lives...");
-                        System.out.println(cName + "'s journey ended unexpectedly.");
-                        clearConsole(9000);
-                        input.close();
-                        System.exit(1);
+                    if (eHitChance >= 18) { // Ctritical hit chance is lower for enemy so that ranged weapons are too powerful (they still might be)
+                        System.out.println(ENEMY + eName[i] + " got a critical hit!");
+                        stats[0] -= enemyDamage*2;
+                        slowTxt(eName[i] + RESET + " attacked " + cName + " and did " + enemyDamage*2 + " damage!\n\n", 20);
+                    } else {
+                        stats[0] -= enemyDamage;
+                        slowTxt(ENEMY + eName[i] + RESET + " attacked " + cName + " and did " + enemyDamage + " damage!\n", 20);
                     }
 
-                    System.out.println(ALLY + "BUT THAT DIDNT STOP " + cName.toUpperCase() + "!\n" + RESET);
-                    System.out.println("Lives left: " + lives);
-                    damage += 10;
-                    cHealth = cMaxHealth;
+                    // Removes a life if the enemy kills character
+                    if (stats[0] <= 0) {
+                        slowTxt("\n" + ENEMY + cName + " died!\n" + RESET, 100);
+
+                        stats[3]--;
+
+                        // If the player runs out of lives it ends the game (might be too harsh but idk. Maybe we add a way to gain lives)
+                        if (stats[3] < 0) {
+                            slowTxt(cName + " ran out of lives...\n", 130);
+                            slowTxt(cName + "'s journey ended unexpectedly.", 100);
+                            clearConsole(2000);
+                            input.close();
+                            System.exit(1);
+                        }
+
+                        slowTxt(ALLY + "BUT THAT DIDNT STOP " + cName.toUpperCase() + "!\n\n" + RESET, 100);
+                        slowTxt("Lives left: " + stats[3] + "\n", 100);
+                        damage += 10;
+                        stats[0] = stats[1];
+                    }
+                } else {
+                    slowTxt(ENEMY + eName[i] + " missed!\n" + RESET, 20);
                 }
             } else {
-                System.out.println(ENEMY + eName[i] + " missed!\n" + RESET);
+                if (eHealth[i] > 0 && eHitChance >= 10 && aHealth > 0) { // If enemy is alive and their attack hit...
+                    enemyDamage = (eHitChance == 20)? (int)((eDamage[i]*2)) : (int)(eDamage[i]);
+
+                    if (eHitChance >= 20) {
+                        System.out.println(ENEMY + eName[i] + " got a critical hit!");
+                        aHealth -= enemyDamage*2;
+                        slowTxt(eName[i] + RESET + " attacked " + aName + " and did " + enemyDamage*2 + " damage!\n\n", 20);
+                    } else {
+                        aHealth -= enemyDamage;
+                        slowTxt(ENEMY + eName[i] + RESET + " attacked " + aName + " and did " + enemyDamage + " damage!\n", 20);
+                    }
+
+                    if (aHealth <= 0) {
+                        System.out.println("\n" + ENEMY + aName + " died!\n" + RESET);
+                        aName = "";
+                    }
+                } else {
+                    slowTxt(ENEMY + eName[i] + " missed!\n" + RESET, 20);
+                }
             }
+            pause(200);
         }
     }
 
-    return lives;
+    stats[2] = levelUp(cName, stats[2]);
+    stats[1] += 10;
+    stats[0] = stats[1];
+    skills = increaseSkills(cName, skills);
+    damageMultipliers = increaseDamage(cName, damageMultipliers);
 }
 
 // Method that increases character's level
