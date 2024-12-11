@@ -29,7 +29,7 @@ Description : The Slums is a text based adventure game set in a world where Sci-
                each background shows a brief story of what life is like in the city for the different types of people that live there.
                Due to an outbreak of a deadly virus spread through violence, the player's character is quarantined inside of the
                slums and its up to the player to figure a way out before things get worse. Buuuut... While the player is trapped
-               inside of the slums, they can enjoy a variety of activities that are common for people of the slums.
+               inside of the slums, they can enjoy a variety of activities that are common for people in the slums.
                
 The player can:
 - Purchase a plethora of weapons to convince those who dissagree with them.
