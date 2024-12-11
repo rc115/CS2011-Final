@@ -1,4 +1,4 @@
-# CS2011-Final
+# CS2011-Final: Text Based Adventure Game
 
 Rigoberto Castro
 
@@ -11,8 +11,7 @@ Delil Tursun
 Kanishq Viradiya
 
 
-
-CS2011-01 Final: Text Based Adventure Game
+__________________________________________________________________________________________________________________________________________
 Project Name:
 
            ____________
