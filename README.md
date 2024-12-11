@@ -24,6 +24,8 @@ Project Name:
                      _\ \/ / // /  ' \(_-<
                     /___/_/\_,_/_/_/_/___/
 
+__________________________________________________________________________________________________________________________________________
+
 Inspirations: Fallout 2 by Interplay, TES: Skyrim by Bethesda, Cyberpunk 2077 by CD Projekt Red, GTA: V by Rockstar
  
 Description : The Slums is a text based adventure game, written in Java, set in a world where Sci-Fi and Fantasy fart in the same room.
