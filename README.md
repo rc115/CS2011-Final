@@ -30,11 +30,12 @@ Description : The Slums is a text based adventure game set in a world where Sci-
                Due to an outbreak of a deadly virus spread through violence, the player's character is quarantined inside of the
                slums and its up to the player to figure a way out before things get worse. Buuuut... While the player is trapped
                inside of the slums, they can enjoy a variety of activities that are common for people of the slums.
-               The player can:
-               - Purchase a plethora of weapons to convince those who dissagree with them.
-               - Buy armour of all kinds to protect their character from unwanted acts of aggression.
-               - Spend some time at the well with the best lads and get bonkered after a few strong cups of drink.
-               - Join a violent gang and assimilate into their group to commit crimes as a collective.
-               - Complete odd jobs to earn doubloons for a shinier knife or a bigger gun.
-               - Spend their life earnings on one hand at the Ponkler table.
-               - And of course... try to escape from the slums.
+               
+The player can:
+- Purchase a plethora of weapons to convince those who dissagree with them.
+- Buy armour of all kinds to protect their character from unwanted acts of aggression.
+- Spend some time at the well with the best lads and get bonkered after a few strong cups of drink.
+- Join a violent gang and assimilate into their group to commit crimes as a collective.
+- Complete odd jobs to earn doubloons for a shinier knife or a bigger gun.
+- Spend their life earnings on one hand at the Ponkler table.
+- And of course... try to escape from the slums.
