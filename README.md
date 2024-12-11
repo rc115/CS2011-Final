@@ -1,13 +1,20 @@
 # CS2011-Final
 
 Rigoberto Castro
+
 Roberto Mata
+
 Jennifer Millan
+
 Delil Tursun
+
 Kanishq Viradiya
+
+
 
 CS2011-01 Final: Text Based Adventure Game
 Project Name:
+
            ____________
            ___  __/__  /______
            __  /  __  __ \  _
